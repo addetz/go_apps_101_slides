@@ -62,7 +62,7 @@ Run your code with
 .image https://media.giphy.com/media/MeAJb6e5Obb8Y/giphy.gif
 
 * What we will build 
-.image app_diagram.jpg
+.image app_diagram.png
 
 * Keywords
 The following are *reserved* keywords in Go. 
