@@ -1,0 +1,260 @@
+Go apps 101
+How to build & test them 
+20 Oct 2019
+
+Adelina Simion
+Software Engineer Backend, Deliveroo 
+adelina.simion@deliveroo.co.uk
+@DeliverooEng
+@classic_addetz
+
+* About me
+Software engineer, Back-End at Deliveroo, London 
+
+- M.Sc. Mathematical Modelling & Computing from Technical University of Denmark
+- Living in London 5 years 🇬🇧
+- Java for 5 years, Go for 1 year or so 
+- First time running a workshop
+- Brought my two coworkers - Skip & Jesus 💪
+
+.image deliveroo_logo_2.png _ 550
+
+* Workshop goals 
+This workshop is aimed at Go beginners. We will spend the next 3 or so hours together learning Go fundamentals and experimenting with Go apps. 
+The workshop will be modular, with each section building on top of each other. 
+
+At the end, you will have built: 
+- An app which saves food orders to an in-memory database 
+- An app which presents food orders via REST
+- An app which is easy to extend and is well tested 
+
+All done in Go! So let’s get cracking…. 
+
+.image gopher_go.png _ 450
+
+* Agenda 
+- Discuss Go fundamentals as needed
+- Setup and explore the repo starting point 
+- Implement the order processing app -  `Order` model, `OrderRepo` and `OrderService`  
+- Unit testing & mock generation of the app
+- Present our orders via REST and think about our error cases
+- Round up & finish off the day 
+
+.image gopher_jumping.gif _ 250
+
+* Setup 
+- Setup your GO environment 
+- Setup `$GOPATH`
+- Setup `$GO111MODULE`
+- Clone our repo in your `GOPATH` 
+- Develop with any IDE you prefer
+
+.link https://golang.org/doc/install golang.org/doc/install
+.link https://github.com/addetz/api_testing_go github.com/addetz/api_testing_go
+
+.image go_logo.png _ 350
+
+* Exercise 1 - Hello, world! 
+Let’s test our Go setup by running `cmd/hello_world.go`
+.play hello.go
+Run your code with 
+.code go_run.go
+.image https://media.giphy.com/media/MeAJb6e5Obb8Y/giphy.gif
+
+* What we will build 
+.image app_diagram.jpg
+
+* Keywords
+The following are *reserved* keywords in Go. 
+
+.code go_keywords.go
+.image https://media.giphy.com/media/xT9KVuimKtly3zoJ0Y/giphy.gif
+
+* Primitives 
+.code go_primitives.go
+.image https://media.giphy.com/media/umehzEQ4uJdfO/giphy.gif _ 300
+
+* Zero values
+Variables declared without an explicit initial value are given their zero value.
+
+The zero value is:
+
+- `0` for numeric types,
+- `false` for the boolean type, and
+- `""` (the empty string) for strings.
+
+In Go, we use pointers if a _nil_ is required.
+
+* Structs - the building blocks of Go
+We can define our own types in Go using _structs_.
+
+- A struct is an aggregate data type that groups together zero or more named values of arbitrary types as a single entity
+- Each value is called a _field_
+- All of these fields are collected into a _single_ _entity_ that can be copied as a unit, passed to functions, stored in arrays etc.
+
+_Structs_ may have 0 or more fields. 
+.code go_structs.go
+
+* Exported vs unexported names
+In Go, a name is exported if it begins with a capital letter. 
+For example, `Pi` is exported from the `math` package.
+
+.play exported_names.go
+
+When importing a package, you can refer only to its exported names. 
+Any "unexported" names are not accessible from outside the package.
+
+* Exercise 2 - Define Item struct
+Fill in `models/item.go` with new fields.
+.code ex2.go
+Uncomment `models/item_ex2_test.go` and run it to see it pass. 
+.code ex2_test_run.go
+
+We will discuss testing later, but passing tests ensure we are on the same page.
+.image https://media.giphy.com/media/143vPc6b08locw/giphy.gif _ 250
+
+* Declaring variables 
+As previously mentioned variables that are not initialized get a _zero_ value. 
+There are 3 ways to initialize variables in Go: 
+
+.play go_var_init.go
+
+* Initializing Structs 
+Structs are initialized in an analogous way to primitive variables. 
+
+.play go_struct_init.go
+
+* Exercise 3 - Create some items
+Fill in `cmd/main.go` with some items. 
+
+*Note:* As you might have noticed, structs are printed using the verb syntax: 
+.code go_print_item.go
+
+Run your main program with 
+.code go_run_main.go
+
+.image https://media.giphy.com/media/12uXi1GXBibALC/giphy.gif _ 350 
+
+* Accessing struct fields 
+Exported struct fields are accessed using the `.` operator.
+
+.play go_struct_access.go
+
+* Constants & Iota
+Constants cannot be modified once they have been declared.
+They are declared with the `const` keyword. 
+
+`iota` is used in `const` declarations to simplify definitions of incrementing numbers.
+The value of iota starts from 0 in each discreet const block.
+
+.play go_iota.go
+
+* Exercise 4 - Define the OrderStatus constant using iota
+.code ex3.go 
+Uncomment `models/order_status_ex4_test.go` and run it to see it pass. 
+.code ex3_test_run.go
+.image https://media.giphy.com/media/1sSWWMNnaZLlm/giphy.gif _ 350
+
+* Functions 
+Functions in Go are *first* *class* *citizens*, meaning they are primitives. 
+They are declared using the `func` keyword. 
+
+.play go_functions.go
+
+* Methods 
+Methods allow us to namespace a function to a receiver. 
+The function receiver is the implicit first argument of a function. 
+Exported struct methods are accessed using the `.` operator. 
+
+.play go_methods.go
+
+* Exercise 5 - List a menu Item
+Fill in our `models/item.go` with a `List()` method that will return the menu listing for the item. 
+.code ex5.go
+Uncomment `models/item_ex5_test.go` and run it to see it pass.
+.code ex5_test_run.go
+
+* Pointers 
+Pointers allow us to point to the memory space of a value. 
+To indicate we are expecting a pointer we use the `*` operator. 
+To get the address of value, we use the `&` operator. 
+
+.play go_pointers.go /START OMIT/,/END OMIT/ 
+
+* Arrays
+In Go, arrays are:
+ 
+- Fixed length - once an array has allocated its size it cannot be changed
+- Fixed type 
+- Zero based 
+- Accessed by index 
+
+.play go_arrays.go
+
+* Slices
+In Go, slices are: 
+
+- Fixed type 
+- Dynamically sized 
+- Flexible 
+- Have a pointer to an underlying array
+
+.play go_slices.go
+
+* Slices cont'd
+Great explanation of slices here: 
+.link https://blog.golang.org/go-slices-usage-and-internals
+
+A slice is a descriptor of an array segment. It consists of :
+
+- a pointer to the array
+- the length of the segment
+- its capacity (the maximum length of the segment)
+
+.image golang_slice_internals.png _ 500
+
+* Exercise 6 - Define the Order model 
+Fill in `models/order.go` with the models we have so far: 
+.code ex6.go
+Uncomment `models/order_ex6_test.go` and run it to see it pass. 
+.code ex6_test_run.go
+
+.image https://media.giphy.com/media/tZaFa1m8UfzXy/giphy.gif _ 300
+
+* Control flow
+The `if` statement looks as it does in other languages, except that the `()` are removed and the `{}` are required.
+`if` also supports short-hand notation with all variables in statement scope. 
+
+.play go_control_flow.go
+
+* For loops & Ranges
+The two most common ways to travers arrays & slices in Go are the `for`-loop and the `range`. The `range` is the most popular. 
+
+.play go_range.go
+
+* Exercise 7 - Implement Order total
+Fill in `models/order.go` with a `GetTotal()` method. 
+This should calculate the order total of the items array by using the `range` operator. 
+.code ex7.go
+
+Uncomment `models/order_ex7_test.go` and run it to see it pass 
+.code ex7_test_run.go 
+
+.image https://media.giphy.com/media/BMBMMfVxZ2lOM/giphy.gif _ 400
+
+* Multiple return values
+Go supports multiple return values. Notice the `()` around them.
+This feature is used often in idiomatic Go, for example to return both result and error values from a function.
+
+.play go_multiple_return.go /START OMIT/,/END OMIT/
+
+*Note:* It is good practice in Go to handle error cases first.
+
+* Exercise 8 - Implement the OrderRepo
+Fill in `repo/order_repo.go` to allow us to save & retrieve orders.
+.code ex8.go
+
+Uncomment `repo/order_repo_ex8_test.go` and run it to see it pass. 
+.code ex8_test_run.go
+
+.image https://media.giphy.com/media/iBEW5Amz0ztza/giphy.gif _ 200  
