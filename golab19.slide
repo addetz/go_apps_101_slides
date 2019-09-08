@@ -136,10 +136,10 @@ Structs are initialized in an analogous way to primitive variables.
 .play fundamentals/go_struct_print.go /START OMIT/,/END OMIT/
 
 * Exercise - Create some items
-Fill in `cmd/server.go` with to create & print items.
+Fill in `cmd/main.go` to create & print some items.
 
 Run your program with
-.code exercises/ex_go_run_server.go
+.code exercises/ex_go_run_main.go
 
 .image https://media.giphy.com/media/12uXi1GXBibALC/giphy.gif _ 350 
 
@@ -305,3 +305,25 @@ So far, we have:
 Now on to share our orders ... WITH THE WORLD!
 
 .image https://media.giphy.com/media/iBEW5Amz0ztza/giphy.gif _ 300
+
+* REST API design
+REST APIs use HTTP methods to present & alter resources.
+Resources are presented at intuitive endpoints, which do not contain verbs.
+Most REST APIs return JSON responses.
+
+For our Orders REST API, _orders_ are our _resources_.
+We will expose the following endpoints:
+.code fundamentals/go_orders_api.go
+
+* The Orders REST Server
+Uncomment `cmd/server.go`. Let's examine what it does ...
+
+- Creates two items & an order as a testing starting point
+- Creates a new `DB` and passes the reference to `OrderRepo`
+- Creates a `Handler` and passes it a reference to `OrderRepo`
+- Uses `github.com/gorilla/mux` to create a router
+- Adds routes to it via `Handlers`
+- Starts the router on port `8080`
+
+.image https://media.giphy.com/media/3o7TKAK6dCfEQoTC2A/giphy.gif _ 350
+
