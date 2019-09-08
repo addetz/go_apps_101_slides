@@ -1,7 +1,7 @@
-package main 
+package main
 
-import "fmt" 
-
+import "fmt"
+//START OMIT
 func main() {
 	fruits := []string{"Apple", "Banana", "Kiwi", "Orange"}
 	for i := 0; i < len(fruits); i++ {
@@ -12,3 +12,4 @@ func main() {
 		fmt.Printf("%d - %s ", i, fruit)
 	}
 }
+//END OMIT

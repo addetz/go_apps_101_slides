@@ -2,6 +2,7 @@ package main
 
 import "fmt"
 
+//START OMIT
 type Person struct {
 	Name string
 }
@@ -14,3 +15,4 @@ func main() {
 	p := Person { Name : "Skip" }
 	p.sayHello()
 }
+//END OMIT

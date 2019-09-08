@@ -15,20 +15,18 @@ Software engineer, Back-End at Deliveroo, London
 - Living in London 5 years 🇬🇧
 - Java for 5 years, Go for 1 year or so 
 - First time running a workshop
-- Brought my two coworkers - Skip & Jesus 💪
 
-.image deliveroo_logo_2.png _ 550
+.image deliveroo_logo_2.png _ 600
 
 * Workshop goals 
-This workshop is aimed at Go beginners. We will spend the next 3 or so hours together learning Go fundamentals and experimenting with Go apps. 
-The workshop will be modular, with each section building on top of each other. 
+We will spend the next 3 or so hours together learning *Go* fundamentals and experimenting with *Go* apps. 
+The workshop will be modular, with each section building on top of the previous one. 
 
 At the end, you will have built: 
+
 - An app which saves food orders to an in-memory database 
 - An app which presents food orders via REST
 - An app which is easy to extend and is well tested 
-
-All done in Go! So let’s get cracking…. 
 
 .image gopher_go.png _ 450
 
@@ -36,8 +34,8 @@ All done in Go! So let’s get cracking….
 - Discuss Go fundamentals as needed
 - Setup and explore the repo starting point 
 - Implement the order processing app -  `Order` model, `OrderRepo` and `OrderService`  
-- Unit testing & mock generation of the app
 - Present our orders via REST and think about our error cases
+- Unit testing & mock generation of the app
 - Round up & finish off the day 
 
 .image gopher_jumping.gif _ 250
@@ -54,11 +52,11 @@ All done in Go! So let’s get cracking….
 
 .image go_logo.png _ 350
 
-* Exercise 1 - Hello, world! 
+* Exercise - Hello, world!
 Let’s test our Go setup by running `cmd/hello_world.go`
 .play hello.go
 Run your code with 
-.code go_run.go
+.code exercises/ex_go_run_hello.go
 .image https://media.giphy.com/media/MeAJb6e5Obb8Y/giphy.gif
 
 * What we will build 
@@ -67,23 +65,35 @@ Run your code with
 * Keywords
 The following are *reserved* keywords in Go. 
 
-.code go_keywords.go
+.code fundamentals/go_keywords.go
 .image https://media.giphy.com/media/xT9KVuimKtly3zoJ0Y/giphy.gif
 
 * Primitives 
-.code go_primitives.go
+.code fundamentals/go_primitives.go
 .image https://media.giphy.com/media/umehzEQ4uJdfO/giphy.gif _ 300
+
+* Printing primitives
+We format & print strings using the `fmt` package, which we might have already seen in the `hello_world` example. 
+Print statements use verbs which are usually preceded by `%`.
+
+.play fundamentals/go_print.go /START OMIT/,/END OMIT/
+.image https://media.giphy.com/media/gw3IWyGkC0rsazTi/giphy.gif _ 250
 
 * Zero values
 Variables declared without an explicit initial value are given their zero value.
-
 The zero value is:
 
 - `0` for numeric types,
 - `false` for the boolean type, and
 - `""` (the empty string) for strings.
 
-In Go, we use pointers if a _nil_ is required.
+.play fundamentals/go_zero.go /START OMIT/,/END OMIT/
+
+* Declaring variables
+As previously mentioned variables that are not initialized get a _zero_ value.
+There are 3 ways to initialize variables in Go:
+
+.play fundamentals/go_var_init.go
 
 * Structs - the building blocks of Go
 We can define our own types in Go using _structs_.
@@ -93,52 +103,52 @@ We can define our own types in Go using _structs_.
 - All of these fields are collected into a _single_ _entity_ that can be copied as a unit, passed to functions, stored in arrays etc.
 
 _Structs_ may have 0 or more fields. 
-.code go_structs.go
+.code fundamentals/go_structs.go
 
 * Exported vs unexported names
 In Go, a name is exported if it begins with a capital letter. 
 For example, `Pi` is exported from the `math` package.
 
-.play exported_names.go
+.play fundamentals/go_exported_names.go
 
 When importing a package, you can refer only to its exported names. 
 Any "unexported" names are not accessible from outside the package.
 
-* Exercise 2 - Define Item struct
+* Exercise  - Define Item struct
 Fill in `models/item.go` with new fields.
-.code ex2.go
-Uncomment `models/item_ex2_test.go` and run it to see it pass. 
-.code ex2_test_run.go
+.code exercises/ex_define_item.go
+Uncomment `models/item_define_test.go` and run it to see it pass.
+.code exercises/ex_define_item_test_run.go
 
 We will discuss testing later, but passing tests ensure we are on the same page.
 .image https://media.giphy.com/media/143vPc6b08locw/giphy.gif _ 250
 
-* Declaring variables 
-As previously mentioned variables that are not initialized get a _zero_ value. 
-There are 3 ways to initialize variables in Go: 
-
-.play go_var_init.go
-
 * Initializing Structs 
 Structs are initialized in an analogous way to primitive variables. 
 
-.play go_struct_init.go
+.play fundamentals/go_struct_init.go /START OMIT/,/END OMIT/
 
-* Exercise 3 - Create some items
-Fill in `cmd/main.go` with some items. 
+* Printing structs
+`Structs` are also printed using `fmt` with:
+ - %v to print values
+ - %+v to print name & value
 
-*Note:* As you might have noticed, structs are printed using the verb syntax: 
-.code go_print_item.go
+.play fundamentals/go_struct_print.go /START OMIT/,/END OMIT/
 
-Run your main program with 
-.code go_run_main.go
+* Exercise - Create some items
+Fill in `cmd/server.go` with to create & print items.
+
+Run your program with
+.code exercises/ex_go_run_server.go
 
 .image https://media.giphy.com/media/12uXi1GXBibALC/giphy.gif _ 350 
 
 * Accessing struct fields 
-Exported struct fields are accessed using the `.` operator.
+Struct fields are accessed using the `.` operator.
+- _Exported_ fields are accessed from any package
+- _Unexported_ fields are only available in the package the `struct` is defined in.
 
-.play go_struct_access.go
+.play fundamentals/go_struct_access.go /START OMIT/,/END OMIT/
 
 * Constants & Iota
 Constants cannot be modified once they have been declared.
@@ -147,39 +157,61 @@ They are declared with the `const` keyword.
 `iota` is used in `const` declarations to simplify definitions of incrementing numbers.
 The value of iota starts from 0 in each discreet const block.
 
-.play go_iota.go
+.play fundamentals/go_iota.go /START OMIT/,/END OMIT/
 
-* Exercise 4 - Define the OrderStatus constant using iota
-.code ex3.go 
-Uncomment `models/order_status_ex4_test.go` and run it to see it pass. 
-.code ex3_test_run.go
+* Exercise - Define the OrderStatus constant using iota
+.code exercises/ex_order_status.go
+Uncomment `models/order_status_test.go` and run it to see it pass.
+.code exercises/ex_order_status_test_run.go
 .image https://media.giphy.com/media/1sSWWMNnaZLlm/giphy.gif _ 350
 
 * Functions 
 Functions in Go are *first* *class* *citizens*, meaning they are primitives. 
 They are declared using the `func` keyword. 
 
-.play go_functions.go
+.play fundamentals/go_functions.go /START OMIT/,/END OMIT/
 
 * Methods 
 Methods allow us to namespace a function to a receiver. 
 The function receiver is the implicit first argument of a function. 
 Exported struct methods are accessed using the `.` operator. 
 
-.play go_methods.go
+.play fundamentals/go_methods.go /START OMIT/,/END OMIT/
 
-* Exercise 5 - List a menu Item
+* Exercise - List a menu Item
 Fill in our `models/item.go` with a `List()` method that will return the menu listing for the item. 
-.code ex5.go
-Uncomment `models/item_ex5_test.go` and run it to see it pass.
-.code ex5_test_run.go
+.code exercises/ex_list_item.go
+Uncomment `models/item_list_test.go` and run it to see it pass.
+.code exercises/ex_list_item_test_run.go
 
 * Pointers 
 Pointers allow us to point to the memory space of a value. 
 To indicate we are expecting a pointer we use the `*` operator. 
 To get the address of value, we use the `&` operator. 
 
-.play go_pointers.go /START OMIT/,/END OMIT/ 
+.play fundamentals/go_pointers.go /START OMIT/,/END OMIT/
+
+* When to use pointers?
+As a rule of thumb, use pointers over values when:
+
+- You want to modify values.
+- You have a large (memory) value that you don't want to keep copying.
+
+.image https://media.giphy.com/media/z9TPacKAkn4CQ/giphy.gif _ 400
+
+
+* Methods on pointer receivers
+Only methods declared on pointer receivers can make changes to instance they are being called.
+
+.play fundamentals/go_pointer_methods.go /START OMIT/,/END OMIT/
+
+* Exercise - Change price of a menu item
+Fill in our `models/item.go` with a `ChangePrice` method that will change the price & currency code of a menu item.
+.code exercises/ex_change_price_item.go
+Uncomment `models/item_change_price_test.go` and run it to see it pass.
+.code exercises/ex_change_price_item_test_run.go
+
+.image https://media.giphy.com/media/aRjH97A7rK74c/giphy.gif _ 250
 
 * Arrays
 In Go, arrays are:
@@ -189,7 +221,7 @@ In Go, arrays are:
 - Zero based 
 - Accessed by index 
 
-.play go_arrays.go
+.play fundamentals/go_arrays.go /START OMIT/,/END OMIT/
 
 * Slices
 In Go, slices are: 
@@ -199,7 +231,7 @@ In Go, slices are:
 - Flexible 
 - Have a pointer to an underlying array
 
-.play go_slices.go
+.play fundamentals/go_slices.go /START OMIT/,/END OMIT/
 
 * Slices cont'd
 Great explanation of slices here: 
@@ -213,11 +245,11 @@ A slice is a descriptor of an array segment. It consists of :
 
 .image golang_slice_internals.png _ 500
 
-* Exercise 6 - Define the Order model 
+* Exercise - Define the Order model
 Fill in `models/order.go` with the models we have so far: 
-.code ex6.go
-Uncomment `models/order_ex6_test.go` and run it to see it pass. 
-.code ex6_test_run.go
+.code exercises/ex_order.go
+Uncomment `models/order_define_test.go` and run it to see it pass.
+.code exercises/ex_order_test_run.go
 
 .image https://media.giphy.com/media/tZaFa1m8UfzXy/giphy.gif _ 300
 
@@ -225,36 +257,51 @@ Uncomment `models/order_ex6_test.go` and run it to see it pass.
 The `if` statement looks as it does in other languages, except that the `()` are removed and the `{}` are required.
 `if` also supports short-hand notation with all variables in statement scope. 
 
-.play go_control_flow.go
+.play fundamentals/go_control_flow.go /START OMIT/,/END OMIT/
 
 * For loops & Ranges
 The two most common ways to travers arrays & slices in Go are the `for`-loop and the `range`. The `range` is the most popular. 
 
-.play go_range.go
+.play fundamentals/go_range.go /START OMIT/,/END OMIT/
 
-* Exercise 7 - Implement Order total
-Fill in `models/order.go` with a `GetTotal()` method. 
+* Exercise - Implement Order total
+Fill in `models/order.go` with a `Total()` method.
 This should calculate the order total of the items array by using the `range` operator. 
-.code ex7.go
+.code exercises/ex_order_total.go
+Uncomment `models/order_total_test.go` and run it to see it pass
+.code exercises/ex_order_total_test_run.go
 
-Uncomment `models/order_ex7_test.go` and run it to see it pass 
-.code ex7_test_run.go 
+*Note:* It is considered idiomatic in Go to put `Get` into getters names.
 
-.image https://media.giphy.com/media/BMBMMfVxZ2lOM/giphy.gif _ 400
+.image https://media.giphy.com/media/BMBMMfVxZ2lOM/giphy.gif _ 300
 
 * Multiple return values
 Go supports multiple return values. Notice the `()` around them.
 This feature is used often in idiomatic Go, for example to return both result and error values from a function.
 
-.play go_multiple_return.go /START OMIT/,/END OMIT/
+.play fundamentals/go_multiple_return.go /START OMIT/,/END OMIT/
 
 *Note:* It is good practice in Go to handle error cases first.
 
-* Exercise 8 - Implement the OrderRepo
-Fill in `repo/order_repo.go` to allow us to save & retrieve orders.
-.code ex8.go
+* Our in memory database
+We will be using an in memory database to save our orders.
+This is implemented in `db/db.go`. It exposes the following methods.
+.code exercises/ex_db_methods.go
+We can use this database by passing a reference of it in the `OrderRepo`.
+.code exercises/ex_order_repo_def.go
 
-Uncomment `repo/order_repo_ex8_test.go` and run it to see it pass. 
-.code ex8_test_run.go
+* Exercise - Implement the OrderRepo
+Fill in `repo/order_repo.go` to allow us to save, find and delete orders.
+.code exercises/ex_order_repo.go
+Uncomment `repo/order_repo_test.go` and run it to see it pass.
+.code exercises/ex_order_repo_test_run.go
 
-.image https://media.giphy.com/media/iBEW5Amz0ztza/giphy.gif _ 200  
+* Progress checkpoint!
+So far, we have:
+- Defined the `Item` model
+- Defined the `Order` model which contains one or more items
+- Implemented `OrderRepo` to save, find & delete orders
+
+Now on to share our orders ... WITH THE WORLD!
+
+.image https://media.giphy.com/media/iBEW5Amz0ztza/giphy.gif _ 300

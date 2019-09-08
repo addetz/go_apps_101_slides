@@ -2,6 +2,7 @@ package main
 
 import "fmt"
 
+//START OMIT
 const (
 	MON int = iota
 	TUE
@@ -14,4 +15,5 @@ func main() {
 	fmt.Println(MON, TUE, WED, THUR, FRI)
 
 }
+//END OMIT
 
