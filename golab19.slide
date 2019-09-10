@@ -18,6 +18,18 @@ Software engineer, Back-End at Deliveroo, London
 
 .image images/deliveroo_logo_2.png _ 600
 
+* About Deliveroo
+13 markets
+we deliver food from restaurants to consumer
+screenshot of the app
+3 groups - consumer, restaurant, rider
+work on projects to make the consumer experience better
+talk about Go ramp up
+a little bit about checkout architecture
+restaurant list is in Go
+
+* Go at Deliveroo
+
 * Workshop goals 
 We will spend the next 3 or so hours together learning *Go* fundamentals and experimenting with *Go* apps. 
 The workshop will be modular, with each section building on top of the previous one. 
