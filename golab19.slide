@@ -243,7 +243,7 @@ A slice is a descriptor of an array segment. It consists of :
 - the length of the segment
 - its capacity (the maximum length of the segment)
 
-.image golang_slice_internals.png _ 500
+.image images/golang_slice_internals.png _ 500
 
 * Exercise - Define the Order model
 Fill in `models/order.go` with the models we have so far: 
