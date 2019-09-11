@@ -3,20 +3,37 @@ How to build & test them
 20 Oct 2019
 
 Adelina Simion
-Software Engineer (Backend), Deliveroo
+Software Engineer, Deliveroo
 adelina.simion@deliveroo.co.uk
 @DeliverooEng
 @classic_addetz
 
 * About me
-Software engineer, Back-End at Deliveroo, London 
+Software engineer (Backend) at Deliveroo, London
 
 - M.Sc. Mathematical Modelling & Computing from Technical University of Denmark
 - Living in London 5 years 🇬🇧
 - Java for 5 years, Go for 1 year or so 
 - First time running a workshop
 
-.image images/deliveroo_logo_2.png _ 600
+.image images/deliveroo_main.png _ 650
+
+* About Deliveroo
+
+- Deliveroo is an online food delivery company founded in 2013 in London
+- Currently operating in 13 markets
+- The business is divided into 3 groups: *Consumer*, *Rider* & *Restaurants*
+- I am working in the *Consumer* group, focused on improving consumer experience
+
+.image images/deliveroo-rider.png _ 600
+
+* Go at Deliveroo
+
+- Initially built in Ruby on Rails, *Deliveroo* is a Go convert!
+- Most of our new *Consumer* projects are written in Go.
+- Among many projects, Go already powers our restaurant list.
+
+.image images/deliveroo-florence.png _ 750
 
 * Workshop goals 
 We will spend the next 3 or so hours together learning *Go* fundamentals and experimenting with *Go* apps. 
@@ -33,7 +50,7 @@ At the end, you will have built:
 * Agenda 
 - Discuss Go fundamentals as needed
 - Setup and explore the repo starting point 
-- Implement the order processing app -  `Order` model, `OrderRepo` and `OrderService`  
+- Implement the order processing app
 - Present our orders via REST and think about our error cases
 - Unit testing & mock generation of the app
 - Round up & finish off the day 
@@ -41,7 +58,7 @@ At the end, you will have built:
 .image images/gopher_jumping.gif _ 250
 
 * Setup 
-- Setup your GO environment 
+- Setup your Go environment
 - Setup `$GOPATH`
 - Setup `$GO111MODULE`
 - Clone our repo in your `GOPATH` 
@@ -58,6 +75,23 @@ Let’s test our Go setup by running `cmd/hello_world.go`
 Run your code with 
 .code exercises/ex_go_run_hello.go
 .image https://media.giphy.com/media/MeAJb6e5Obb8Y/giphy.gif
+
+* Packages
+As you saw in the `hello_world` example Go files *must* start with a `package` declaration.
+It is *encouraged*, but not required that the package name be the same its folder.
+Executable programs must have a `main` package that declares a `main()` function that receives no arguments and has no return values.
+.code fundamentals/go_packages.go
+Packages are imported using the `import` keyword.
+.code fundamentals/go_imports.go /START OMIT/,/END OMIT/
+
+* Skeleton of our repo
+Let's clone & explore our repo...
+.link https://github.com/addetz/api_testing_go github.com/addetz/api_testing_go
+
+.code exercises/repo_structure.go /START OMIT/,/END OMIT/
+
+.image https://media.giphy.com/media/vl8ncD72EnhoA/giphy.gif _ 300
+
 
 * What we will build 
 .image images/app_diagram.png
