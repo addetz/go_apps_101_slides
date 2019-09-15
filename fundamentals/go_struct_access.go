@@ -5,11 +5,11 @@ import "fmt"
 //START OMIT
 type Person struct {
 	Name string
-	Age int 
+	Title string
 }
 
 func main() {
-	p := Person { Name: "Adelina", Age: 18 }
+	p := Person { Name: "Adelina", Title: "Miss" }
 	fmt.Printf("Name: %v", p.Name)
 }
 //END OMIT

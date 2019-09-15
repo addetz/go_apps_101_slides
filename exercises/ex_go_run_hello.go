@@ -1,1 +1,1 @@
-go run cmd/hello_world.go
+go run hello/hello_world.go

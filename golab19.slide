@@ -15,7 +15,6 @@ Software engineer (Backend) at Deliveroo, London
 - Living in London 5 years 🇬🇧
 - Java for 5 years, Go for 1 year or so 
 - First time running a workshop
-
 .image images/deliveroo_main.png _ 650
 
 * About Deliveroo
@@ -61,16 +60,17 @@ At the end, you will have built:
 - Setup your Go environment
 - Setup `$GOPATH`
 - Setup `$GO111MODULE`
-- Clone our repo in your `GOPATH` 
+- Clone our repo in your `GOPATH/src/github.com`
 - Develop with any IDE you prefer
 
 .link https://golang.org/doc/install golang.org/doc/install
-.link https://github.com/addetz/api_testing_go github.com/addetz/api_testing_go
+.link https://github.com/addetz/go_apps_101 github.com/addetz/go_apps_101
 
 .image images/go_logo.png _ 350
 
+
 * Exercise - Hello, world!
-Let’s test our Go setup by running `cmd/hello_world.go`
+Let’s test our Go setup by running `hello/hello_world.go`
 .play exercises/hello.go
 Run your code with 
 .code exercises/ex_go_run_hello.go
@@ -78,23 +78,31 @@ Run your code with
 
 * Packages
 As you saw in the `hello_world` example Go files *must* start with a `package` declaration.
-It is *encouraged*, but not required that the package name be the same its folder.
-Executable programs must have a `main` package that declares a `main()` function that receives no arguments and has no return values.
+It is *encouraged*, but not required that the package name be the same as its folder.
+Executable programs must have a `main` package that declares a `main()` function that receives *no* *arguments* and has *no* *return* values.
+Only one `main` method may be declared per package.
 .code fundamentals/go_packages.go
+.image https://media.giphy.com/media/3oKIP9cJEOO9ljKoCc/giphy.gif _ 200
+
+* Importing packages with Go modules
+Go does not have a central repository for downloading packages.
 Packages are imported using the `import` keyword.
 .code fundamentals/go_imports.go /START OMIT/,/END OMIT/
+Packages are then downloaded and installed with
+.code fundamentals/go_get_package.go
+Once the download is complete, it saves the package content inside `github.com/external/package` directory under `$GOPATH/src`
+
+We have cloned our repo into `GOPATH/src/github.com`.
+This allows `Go` modules to resolve all our project dependencies locally, since the path matches the paths we have declared for import.
 
 * Skeleton of our repo
-Let's clone & explore our repo...
-.link https://github.com/addetz/api_testing_go github.com/addetz/api_testing_go
-
+Let's explore our repo...
+.link https://github.com/addetz/go_apps_101 github.com/addetz/go_apps_101
 .code exercises/repo_structure.go /START OMIT/,/END OMIT/
-
 .image https://media.giphy.com/media/vl8ncD72EnhoA/giphy.gif _ 300
 
-
 * What we will build 
-.image images/app_diagram.png
+.image images/app_to_build.png
 
 * Keywords
 The following are *reserved* keywords in Go. 
@@ -170,11 +178,9 @@ Structs are initialized in an analogous way to primitive variables.
 .play fundamentals/go_struct_print.go /START OMIT/,/END OMIT/
 
 * Exercise - Create some items
-Fill in `cmd/main.go` to create & print some items.
-
+Fill in `cmd/server.go` to create & print some items.
 Run your program with
 .code exercises/ex_go_run_main.go
-
 .image https://media.giphy.com/media/12uXi1GXBibALC/giphy.gif _ 350 
 
 * Accessing struct fields 
@@ -201,9 +207,9 @@ Uncomment `models/order_status_test.go` and run it to see it pass.
 
 * Functions 
 Functions in Go are *first* *class* *citizens*, meaning they are primitives. 
-They are declared using the `func` keyword. 
-
+They are declared using the `func` keyword and support short hand notation with `:=`
 .play fundamentals/go_functions.go /START OMIT/,/END OMIT/
+.image https://media.giphy.com/media/n4WpP39mwWrmg/giphy.gif _ 350
 
 * Methods 
 Methods allow us to namespace a function to a receiver. 
@@ -212,14 +218,16 @@ Exported struct methods are accessed using the `.` operator.
 
 .play fundamentals/go_methods.go /START OMIT/,/END OMIT/
 
-* Exercise - List a menu Item
-Fill in our `models/item.go` with a `List()` method that will return the menu listing for the item. 
-.code exercises/ex_list_item.go
-Uncomment `models/item_list_test.go` and run it to see it pass.
-.code exercises/ex_list_item_test_run.go
+* Exercise - Print the price of a menu Item
+Fill in our `models/item.go` with a `PrintWithPrice()` method that will return the price for the item.
+.code exercises/ex_price_item.go
+Uncomment `models/item_price_test.go` and run it to see it pass.
+.code exercises/ex_price_item_test_run.go
+.image https://media.giphy.com/media/4lf1L0axY1vyM/giphy.gif _ 350
 
 * Pointers 
-Pointers allow us to point to the memory space of a value. 
+Pointers allow us to point to the memory space of a value.
+The zero value of a pointer is `nil`.
 To indicate we are expecting a pointer we use the `*` operator. 
 To get the address of value, we use the `&` operator. 
 
@@ -230,6 +238,7 @@ As a rule of thumb, use pointers over values when:
 
 - You want to modify values.
 - You have a large (memory) value that you don't want to keep copying.
+- You want to be able to return a `nil` value.
 
 .image https://media.giphy.com/media/z9TPacKAkn4CQ/giphy.gif _ 400
 
@@ -264,6 +273,7 @@ In Go, slices are:
 - Dynamically sized 
 - Flexible 
 - Have a pointer to an underlying array
+- Can share an underlying array
 
 .play fundamentals/go_slices.go /START OMIT/,/END OMIT/
 
@@ -324,6 +334,13 @@ This is implemented in `db/db.go`. It exposes the following methods.
 We can use this database by passing a reference of it in the `OrderRepo`.
 .code exercises/ex_order_repo_def.go
 
+* Maps
+Maps are powerful data structures that associate keys and values.
+They return the zero value of the value type when attempting to retrieve a non-existent key.
+We use the extra `ok` return value to check whether a key exists.
+.play fundamentals/go_maps.go /START OMIT/,/END OMIT/
+Our in memory database is implemented using a `map`.
+
 * Exercise - Implement the OrderRepo
 Fill in `repo/order_repo.go` to allow us to save, find and delete orders.
 .code exercises/ex_order_repo.go
@@ -340,7 +357,16 @@ Now on to share our orders ... WITH THE WORLD!
 
 .image https://media.giphy.com/media/iBEW5Amz0ztza/giphy.gif _ 300
 
-* REST API design
+* REpresentational State Transfer refresher
+
+- *Resource* *based* *URIs* - endpoints are self explanatory and named after their resources
+- *HTTP* *methods* - define what the operation on the resource is ie POST for update/create, GET for fetching resource
+- *HTTP* *status* *codes* - show the success/error code of the operation performed on the server
+- *Message* *headers* - other parameters such as `content-type` which define the request & response format
+
+.image https://media.giphy.com/media/xUOxf9lJKcBDrE6qmk/giphy.gif _ 235
+
+* Orders API design
 REST APIs use HTTP methods to present & alter resources.
 Resources are presented at intuitive endpoints, which do not contain verbs.
 Most REST APIs return JSON responses.
@@ -349,15 +375,121 @@ For our Orders REST API, _orders_ are our _resources_.
 We will expose the following endpoints:
 .code fundamentals/go_orders_api.go
 
+* Anatomy of the Orders REST Server
+
+- Our server exposes *endpoints* which are accessible by the client.
+- Each endpoint has a *handler* function bound to it which calls the appropriate `OrderRepo` method
+- The handler function then returns the HTTP response & status code to the server
+- The server forwards the handler's response to the client.
+
+.image https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif _ 300
+
+* Exercise - Starting a simple server in Go
+Creating & starting servers in Go is very simple.
+You will see this code in `echo/echo.go`
+.code exercises/ex_simple_server.go /START OMIT/,/END OMIT/
+Run the server and go to any path at `localhost:8080` to see the server echo our path.
+.code exercises/ex_simple_server_run.go
+
+* What we will build (in more detail)
+The Orders REST server has the following main components.
+.image images/app_diagram_server.png
+
+
 * The Orders REST Server
-Uncomment `cmd/server.go`. Let's examine what it does ...
+Let's examine what `cmd/server` does ...
 
 - Creates two items & an order as a testing starting point
 - Creates a new `DB` and passes the reference to `OrderRepo`
 - Creates a `Handler` and passes it a reference to `OrderRepo`
-- Uses `github.com/gorilla/mux` to create a router
-- Adds routes to it via `Handlers`
+- Creates a router by calling the `ConfigureServer()` function
 - Starts the router on port `8080`
 
 .image https://media.giphy.com/media/3o7TKAK6dCfEQoTC2A/giphy.gif _ 350
 
+* JSON marshal
+
+Go offers built in support JSON encoding & decoding of custom data structures. Only exported fields will be encoded/decoded in JSON.
+Tags on struct field declarations allow us to customize the encoded JSON key names.
+*NOTE*: It is not considered idiomatic JSON to have uppercased fields.
+.play fundamentals/go_json_marshal.go /START OMIT/,/END OMIT/
+
+
+* JSON unmarshal
+
+- The JSON marshal/encode operation converts structs into bytes which can be sent to HTTP responses.
+- The JSON unmarshal/decode operation converts bytes back into structs to be used.
+.play fundamentals/go_json_unmarshal.go /START OMIT/,/END OMIT/
+
+* Handlers
+As previously mentioned handlers are functions which will be invoked when the client hits a route/endpoints.
+The `ConfigureServer()` function defined in `handlers/config.go` defines the route & handler associations
+
+.code exercises/ex_configure_server.go
+
+* What our handlers should do
+
+- Read any request parameters ie. the `orderId` of the requested order
+- Read the request body, in the case of a `POST`, and unmarshal it to the correct `struct`
+- Call the corresponding `OrderRepo` operation
+- Unmarshal any returned `OrderRepo` structs that might be needed as response
+- Write the HTTP status code & order bytes to the response
+
+.image https://media.giphy.com/media/3ofT5PzM67qEoeihmo/giphy.gif _ 400
+
+* Exercise - Implement Order Server API handlers
+Look at `handlers/handlers.go` and fill in the missing parts to make the method compile/run.
+You should use the `writeResponse` helper method to write a REST response
+.code exercises/ex_handlers.go
+There is no test to run as exercise verification for now.
+
+
+* Run the Order Server
+.code exercises/ex_run_server.go
+
+- Test out the GET operations from the browser.
+- Test out the POST operation using `curl`. Edit your input body data in `postBody.json`
+.code exercises/ex_curl_post.go
+- Test out the DELETE operation using `curl`.
+.code exercises/ex_curl_delete.go
+
+* Progress checkpoint!
+So far, we have:
+- Defined the `Item` model
+- Defined the `Order` model which contains one or more items
+- Implemented `OrderRepo` to save, find & delete orders
+- Implement the Orders REST server & manually tested it.
+
+Now on to refactor & test our order server!
+
+.image https://media.giphy.com/media/mi6DsSSNKDbUY/giphy.gif _ 500
+
+* Why can't we unit test our server?
+
+- Our classes currently have a hard dependency on the database and cannot be tested without real data.
+- The `OrderRepo` has a hard dependency of the `DB`, so we cannot test it in isolation.
+- Our application cannot be easily refactored to use another database.
+- Our handlers cannot be tested without writing real responses.
+
+Therefore, we have had to do our testing manually. Some refactoring is needed!
+
+.image https://media.giphy.com/media/OTrcaFr7P5RIs/giphy.gif _ 350
+
+* Interfaces
+To implement an interface in Go, we just need to implement its methods.
+The compiler will then automatically check that a type satisfies it.
+Interfaces are _implicitly_ defined in Go. This is known as *Duck* *Typing*.
+.play fundamentals/go_interfaces.go /START OMIT/,/END OMIT/
+
+* The power of interfaces
+Interfaces abstract code to make it more reusable, extensible and more testable.
+They are also a way to achieve *polymorphism* in Go.
+
+- The concrete type does not need to know about any interface
+- We can write interfaces for concrete types that already exist
+- We can write interfaces for other people's types, or types that appear in other packages
+
+In Go, *interfaces* are defined in the calling code not in the defining code.
+
+* Exercise - Create a DB interface
+Extract an interface for our DB that `OrderRepo` can use as a dependency.

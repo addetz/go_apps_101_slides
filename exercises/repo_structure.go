@@ -1,5 +1,5 @@
 // START OMIT
-- api_testing_go
+- $GOPATH/src/github.com/go_apps_101
     - cmd // application entry points & REST server
     - db // all things database
     - handlers // functions used by REST server routes
