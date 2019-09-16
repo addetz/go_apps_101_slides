@@ -357,7 +357,7 @@ Now on to share our orders ... WITH THE WORLD!
 
 .image https://media.giphy.com/media/iBEW5Amz0ztza/giphy.gif _ 300
 
-* REpresentational State Transfer refresher
+* REpresentational State Transfer (REST) refresher
 
 - *Resource* *based* *URIs* - endpoints are self explanatory and named after their resources
 - *HTTP* *methods* - define what the operation on the resource is ie POST for update/create, GET for fetching resource
@@ -448,7 +448,7 @@ There is no test to run as exercise verification for now.
 .code exercises/ex_run_server.go
 
 - Test out the GET operations from the browser.
-- Test out the POST operation using `curl`. Edit your input body data in `postBody.json`
+- Test out the POST operation using `curl` from the command line. Edit your input body data in `postBody.json`
 .code exercises/ex_curl_post.go
 - Test out the DELETE operation using `curl`.
 .code exercises/ex_curl_delete.go
@@ -476,9 +476,12 @@ Therefore, we have had to do our testing manually. Some refactoring is needed!
 .image https://media.giphy.com/media/OTrcaFr7P5RIs/giphy.gif _ 350
 
 * Interfaces
-To implement an interface in Go, we just need to implement its methods.
-The compiler will then automatically check that a type satisfies it.
-Interfaces are _implicitly_ defined in Go. This is known as *Duck* *Typing*.
+- To implement an interface in Go, we just need to implement its methods.
+- The compiler will then automatically check that a type satisfies it.
+- Interfaces are _implicitly_ defined in Go.
+- This is known as *Duck* *Typing*.
+
+* Interfaces in action
 .play fundamentals/go_interfaces.go /START OMIT/,/END OMIT/
 
 * The power of interfaces
