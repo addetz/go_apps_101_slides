@@ -1,1 +1,1 @@
-go test models/order_status_test.go
+$ go test models/order_status_test.go

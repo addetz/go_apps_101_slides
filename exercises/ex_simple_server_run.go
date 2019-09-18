@@ -1,1 +1,1 @@
-go run echo/echo.go
+$ go run echo/echo.go

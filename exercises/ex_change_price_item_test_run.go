@@ -1,1 +1,1 @@
-go test models/item_change_price_test.go
+$ go test models/item_change_price_test.go

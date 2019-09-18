@@ -1,1 +1,1 @@
-go get github.com/external/package
+$ go get github.com/external/package

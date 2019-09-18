@@ -32,7 +32,7 @@ Software engineer (Backend) at Deliveroo, London
 - Most of our new *Consumer* projects are written in Go.
 - Among many projects, Go already powers our restaurant list.
 
-.image images/deliveroo-florence.png _ 750
+.image images/deliveroo-florence-no-logo.png _ 800
 
 * Workshop goals 
 We will spend the next 3 or so hours together learning *Go* fundamentals and experimenting with *Go* apps. 
@@ -60,7 +60,7 @@ At the end, you will have built:
 - Setup your Go environment
 - Setup `$GOPATH`
 - Setup `$GO111MODULE`
-- Clone our repo in your `GOPATH/src/github.com`
+- Clone our repo in your `$GOPATH/src/github.com`
 - Develop with any IDE you prefer
 
 .link https://golang.org/doc/install golang.org/doc/install
@@ -77,7 +77,7 @@ Run your code with
 .image https://media.giphy.com/media/MeAJb6e5Obb8Y/giphy.gif
 
 * Packages
-As you saw in the `hello_world` example Go files *must* start with a `package` declaration.
+Go files *must* start with a `package` declaration.
 It is *encouraged*, but not required that the package name be the same as its folder.
 Executable programs must have a `main` package that declares a `main()` function that receives *no* *arguments* and has *no* *return* values.
 Only one `main` method may be declared per package.
@@ -92,7 +92,7 @@ Packages are then downloaded and installed with
 .code fundamentals/go_get_package.go
 Once the download is complete, it saves the package content inside `github.com/external/package` directory under `$GOPATH/src`
 
-We have cloned our repo into `GOPATH/src/github.com`.
+We have cloned our repo into `$GOPATH/src/github.com`.
 This allows `Go` modules to resolve all our project dependencies locally, since the path matches the paths we have declared for import.
 
 * Skeleton of our repo
@@ -102,7 +102,7 @@ Let's explore our repo...
 .image https://media.giphy.com/media/vl8ncD72EnhoA/giphy.gif _ 300
 
 * What we will build 
-.image images/app_to_build.png
+.image images/app_diagram_overview.png
 
 * Keywords
 The following are *reserved* keywords in Go. 
@@ -115,7 +115,7 @@ The following are *reserved* keywords in Go.
 .image https://media.giphy.com/media/umehzEQ4uJdfO/giphy.gif _ 300
 
 * Printing primitives
-We format & print strings using the `fmt` package, which we might have already seen in the `hello_world` example. 
+We format & print strings using the `fmt` package.
 Print statements use verbs which are usually preceded by `%`.
 
 .play fundamentals/go_print.go /START OMIT/,/END OMIT/
@@ -393,7 +393,7 @@ Run the server and go to any path at `localhost:8080` to see the server echo our
 
 * What we will build (in more detail)
 The Orders REST server has the following main components.
-.image images/app_diagram_server.png
+.image images/app_diagram_handlers.png
 
 
 * The Orders REST Server
@@ -469,17 +469,21 @@ Now on to refactor & test our order server!
 - Our classes currently have a hard dependency on the database and cannot be tested without real data.
 - The `OrderRepo` has a hard dependency of the `DB`, so we cannot test it in isolation.
 - Our application cannot be easily refactored to use another database.
-- Our handlers cannot be tested without writing real responses.
 
 Therefore, we have had to do our testing manually. Some refactoring is needed!
 
-.image https://media.giphy.com/media/OTrcaFr7P5RIs/giphy.gif _ 350
+.image https://media.giphy.com/media/3o7btY356cSVYzmFS8/giphy.gif _ 450
 
 * Interfaces
 - To implement an interface in Go, we just need to implement its methods.
+- Interfaces dynamically hold a reference to their underlying types.
+- All structs implement the empty interface - `interface{}`.
+- `Structs` are referred to as *concrete* types, while `interfaces` are *abstract* types.
 - The compiler will then automatically check that a type satisfies it.
 - Interfaces are _implicitly_ defined in Go.
 - This is known as *Duck* *Typing*.
+
+.image https://media.giphy.com/media/vIJaz7nMJhTUc/giphy.gif _ 300
 
 * Interfaces in action
 .play fundamentals/go_interfaces.go /START OMIT/,/END OMIT/
@@ -496,3 +500,60 @@ In Go, *interfaces* are defined in the calling code not in the defining code.
 
 * Exercise - Create a DB interface
 Extract an interface for our DB that `OrderRepo` can use as a dependency.
+*NOTE*: Remember that we defined interfaces in calling code in `Go`.
+.code exercises/ex_db_interface.go
+If the methods are defined correctly in the interface, the compiler will cast the concrete `db.DB` to our interface. Make sure the server still works.
+.code exercises/ex_run_server.go
+
+* Unit Testing
+- Test files live next to the files they are testing and they *must* use `_test.go` as suffix.
+- Black box testing can be ensured by declaring tests in the `*_test` package. The compiler ignores packages ending in `_test` and allows them in the same directory.
+- Tests *must* be in the format `Test<Name>(*testing.T)`.
+- As we've seen before, tests are run using the `go test` command.
+.code fundamentals/go_testing.go /START OMIT/,/END OMIT/
+
+* testing.T important methods
+The testing package contains some useful methods:
+.code fundamentals/go_testing_methods.go
+
+`Error` and `Fatal` both report a test failure, but `Error` will continue with test execution, where `Fatal` will end the test.
+
+* Generating mocks
+Mock generation allows us to generate interface stubs and use them in testing.
+We will use `moq`
+.link https://github.com/matryer/moq
+
+First, install `moq` using `go` `get`.
+Then we can start generating mocks easily.
+.code fundamentals/go_moq.go
+The usage of the `moq` command is:
+.code fundamentals/go_moq_usage.go
+
+* Exercise - Generate a mock & write a test for OrderRepo
+Generate a mock for the `DB` interface.
+.code exercises/ex_generate_mock.go
+Write a test for each of the methods of the `OrderRepo`. Use the documentation in the generated file to mock return values.
+.code exercises/ex_mock_funcs.go
+
+We can now test the `OrderRepo` in isolation!
+
+* Final progress checkpoint!
+- Defined the `Item` model & the `Order` model
+- Implemented `OrderRepo` to save, find & delete orders
+- Implement the Orders REST server & manually tested it
+- Decoupled the Orders application from its database
+- Unit tested the `OrderRepo`
+
+.image https://media.giphy.com/media/10hO3rDNqqg2Xe/giphy.gif _ 600
+
+
+* Further material
+Go tutorials
+.link https://golang.org/
+The Go Programming Language
+.link amazon.com/Programming-Language-Addison-Wesley-Professional-Computing/dp/0134190440
+Effective Go
+.link https://golang.org/doc/effective_go.html
+Concurrency in Go
+.link https://www.amazon.com/Concurrency-Go-Tools-Techniques-Developers/dp/1491941197/
+
