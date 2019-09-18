@@ -44,7 +44,7 @@ At the end, you will have built:
 - An app which presents food orders via REST
 - An app which is easy to extend and is well tested 
 
-.image images/gopher_go.png _ 450
+.image images/gopher_go.png _ 500
 
 * Agenda 
 - Discuss Go fundamentals as needed
@@ -54,7 +54,7 @@ At the end, you will have built:
 - Unit testing & mock generation of the app
 - Round up & finish off the day 
 
-.image images/gopher_jumping.gif _ 250
+.image images/golab-logo.png _ 700
 
 * Setup 
 - Setup your Go environment
@@ -66,7 +66,7 @@ At the end, you will have built:
 .link https://golang.org/doc/install golang.org/doc/install
 .link https://github.com/addetz/go_apps_101 github.com/addetz/go_apps_101
 
-.image images/go_logo.png _ 350
+.image images/go_logo.png _ 450
 
 
 * Exercise - Hello, world!
