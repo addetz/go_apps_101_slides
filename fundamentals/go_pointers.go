@@ -9,11 +9,9 @@ type Fruit struct {
 func renamePassByReference(f *Fruit, newName string) {
 	f.Name = newName
 }
-
 func renamePassByValue(f Fruit, newName string) {
 	f.Name = newName
 }
-
 func main () { 
 	f := Fruit { Name: "Apple" } 
 	fmt.Printf("Original: %v \n", f)

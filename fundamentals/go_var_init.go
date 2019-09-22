@@ -9,6 +9,6 @@ func main() {
 	var one int = 1
 	fmt.Println(one)
 	
-	two := 2 //preferred short hand notation
+	two := 2 // preferred short hand notation
 	fmt.Println(two)
 }

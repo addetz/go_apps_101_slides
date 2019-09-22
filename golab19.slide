@@ -42,7 +42,7 @@ At the end, you will have built:
 
 - An app which saves food orders to an in-memory database 
 - An app which presents food orders via REST
-- An app which is easy to extend and is well tested 
+- An app which is easy to extend and test
 
 .image images/gopher_go.png _ 500
 
@@ -56,17 +56,15 @@ At the end, you will have built:
 
 .image images/golab-logo.png _ 700
 
-* Setup 
+* Setup
+- Installation instructions found on the project `README`
+.link https://github.com/addetz/go_apps_101#go-setup
 - Setup your Go environment
-- Setup `$GOPATH`
-- Setup `$GO111MODULE`
+- Setup `$GOPATH` & `$GO111MODULE`
 - Clone our repo in your `$GOPATH/src/github.com`
 - Develop with any IDE you prefer
-
-.link https://golang.org/doc/install golang.org/doc/install
 .link https://github.com/addetz/go_apps_101 github.com/addetz/go_apps_101
-
-.image images/go_logo.png _ 450
+.image images/go_logo.png _ 400
 
 
 * Exercise - Hello, world!
@@ -148,13 +146,13 @@ _Structs_ may have 0 or more fields.
 .code fundamentals/go_structs.go
 
 * Exported vs unexported names
-In Go, a name is exported if it begins with a capital letter. 
+In Go, a name is exported if it begins with a capital letter. There are no _access_ _modifiers_.
 For example, `Pi` is exported from the `math` package.
 
 .play fundamentals/go_exported_names.go
 
 When importing a package, you can refer only to its exported names. 
-Any "unexported" names are not accessible from outside the package.
+Any _unexported_ names are not accessible from outside the package.
 
 * Exercise  - Define Item struct
 Fill in `models/item.go` with new fields.
@@ -185,8 +183,9 @@ Run your program with
 
 * Accessing struct fields 
 Struct fields are accessed using the `.` operator.
+
 - _Exported_ fields are accessed from any package
-- _Unexported_ fields are only available in the package the `struct` is defined in.
+- _Unexported_ fields are only available in the package the `struct` is defined in
 
 .play fundamentals/go_struct_access.go /START OMIT/,/END OMIT/
 
@@ -195,7 +194,7 @@ Constants cannot be modified once they have been declared.
 They are declared with the `const` keyword. 
 
 `iota` is used in `const` declarations to simplify definitions of incrementing numbers.
-The value of iota starts from 0 in each discreet const block.
+The value of `iota` starts from 0 in each discreet `const` block.
 
 .play fundamentals/go_iota.go /START OMIT/,/END OMIT/
 
@@ -228,8 +227,9 @@ Uncomment `models/item_price_test.go` and run it to see it pass.
 * Pointers 
 Pointers allow us to point to the memory space of a value.
 The zero value of a pointer is `nil`.
-To indicate we are expecting a pointer we use the `*` operator. 
-To get the address of value, we use the `&` operator. 
+
+- To indicate we are expecting a pointer we use the `*` operator.
+- To get the address of a value, we use the `&` operator.
 
 .play fundamentals/go_pointers.go /START OMIT/,/END OMIT/
 
@@ -299,12 +299,13 @@ Uncomment `models/order_define_test.go` and run it to see it pass.
 
 * Control flow
 The `if` statement looks as it does in other languages, except that the `()` are removed and the `{}` are required.
-`if` also supports short-hand notation with all variables in statement scope. 
+`if` also supports short-hand notation.
+All variables are then _only_ defined in statement scope.
 
 .play fundamentals/go_control_flow.go /START OMIT/,/END OMIT/
 
 * For loops & Ranges
-The two most common ways to travers arrays & slices in Go are the `for`-loop and the `range`. The `range` is the most popular. 
+The two most common ways to traverse arrays & slices in Go are the `for`-loop and the `range`. The `range` is the most popular.
 
 .play fundamentals/go_range.go /START OMIT/,/END OMIT/
 
@@ -336,8 +337,7 @@ We can use this database by passing a reference of it in the `OrderRepo`.
 
 * Maps
 Maps are powerful data structures that associate keys and values.
-They return the zero value of the value type when attempting to retrieve a non-existent key.
-We use the extra `ok` return value to check whether a key exists.
+They return the zero value of the value type when attempting to retrieve a non-existent key. We use the extra `ok` return value to check whether a key exists.
 .play fundamentals/go_maps.go /START OMIT/,/END OMIT/
 Our in memory database is implemented using a `map`.
 
@@ -349,6 +349,7 @@ Uncomment `repo/order_repo_test.go` and run it to see it pass.
 
 * Progress checkpoint!
 So far, we have:
+
 - Defined the `Item` model
 - Defined the `Order` model which contains one or more items
 - Implemented `OrderRepo` to save, find & delete orders
@@ -359,21 +360,18 @@ Now on to share our orders ... WITH THE WORLD!
 
 * REpresentational State Transfer (REST) refresher
 
-- *Resource* *based* *URIs* - endpoints are self explanatory and named after their resources
+- *Resource* *based* *URIs* - endpoints are self explanatory and named after their resources. They do not contain verbs
 - *HTTP* *methods* - define what the operation on the resource is ie POST for update/create, GET for fetching resource
 - *HTTP* *status* *codes* - show the success/error code of the operation performed on the server
-- *Message* *headers* - other parameters such as `content-type` which define the request & response format
+- *Message* *headers* - other parameters such as `content-type` which define the request & response format. Most APIs return `JSON` responses
 
 .image https://media.giphy.com/media/xUOxf9lJKcBDrE6qmk/giphy.gif _ 235
 
 * Orders API design
-REST APIs use HTTP methods to present & alter resources.
-Resources are presented at intuitive endpoints, which do not contain verbs.
-Most REST APIs return JSON responses.
-
 For our Orders REST API, _orders_ are our _resources_.
 We will expose the following endpoints:
 .code fundamentals/go_orders_api.go
+We will return `JSON` responses.
 
 * Anatomy of the Orders REST Server
 
@@ -455,6 +453,7 @@ There is no test to run as exercise verification for now.
 
 * Progress checkpoint!
 So far, we have:
+
 - Defined the `Item` model
 - Defined the `Order` model which contains one or more items
 - Implemented `OrderRepo` to save, find & delete orders
@@ -462,26 +461,26 @@ So far, we have:
 
 Now on to refactor & test our order server!
 
-.image https://media.giphy.com/media/mi6DsSSNKDbUY/giphy.gif _ 500
+.image https://media.giphy.com/media/mi6DsSSNKDbUY/giphy.gif _ 450
 
 * Why can't we unit test our server?
 
-- Our classes currently have a hard dependency on the database and cannot be tested without real data.
-- The `OrderRepo` has a hard dependency of the `DB`, so we cannot test it in isolation.
-- Our application cannot be easily refactored to use another database.
+- Our classes currently have a hard dependency on the database and cannot be tested without real data
+- The `OrderRepo` has a hard dependency to the `DB`, so it cannot be tested in isolation
+- Our application cannot be easily refactored to use another database
 
 Therefore, we have had to do our testing manually. Some refactoring is needed!
 
 .image https://media.giphy.com/media/3o7btY356cSVYzmFS8/giphy.gif _ 450
 
 * Interfaces
-- To implement an interface in Go, we just need to implement its methods.
-- Interfaces dynamically hold a reference to their underlying types.
-- All structs implement the empty interface - `interface{}`.
-- `Structs` are referred to as *concrete* types, while `interfaces` are *abstract* types.
-- The compiler will then automatically check that a type satisfies it.
-- Interfaces are _implicitly_ defined in Go.
-- This is known as *Duck* *Typing*.
+- To implement an interface in Go, we just need to implement its methods
+- Interfaces dynamically hold a reference to their underlying types
+- All structs implement the empty interface - `interface{}`
+- `Structs` are referred to as *concrete* types, while `interfaces` are *abstract* types
+- The compiler will then automatically check that a type satisfies it
+- Interfaces are _implicitly_ defined in Go
+- This is known as *Duck* *Typing*
 
 .image https://media.giphy.com/media/vIJaz7nMJhTUc/giphy.gif _ 300
 
@@ -498,18 +497,19 @@ They are also a way to achieve *polymorphism* in Go.
 
 In Go, *interfaces* are defined in the calling code not in the defining code.
 
+
 * Exercise - Create a DB interface
 Extract an interface for our DB that `OrderRepo` can use as a dependency.
-*NOTE*: Remember that we defined interfaces in calling code in `Go`.
+*NOTE*: Remember that we define interfaces in calling code in `Go`.
 .code exercises/ex_db_interface.go
 If the methods are defined correctly in the interface, the compiler will cast the concrete `db.DB` to our interface. Make sure the server still works.
 .code exercises/ex_run_server.go
 
 * Unit Testing
-- Test files live next to the files they are testing and they *must* use `_test.go` as suffix.
-- Black box testing can be ensured by declaring tests in the `*_test` package. The compiler ignores packages ending in `_test` and allows them in the same directory.
-- Tests *must* be in the format `Test<Name>(*testing.T)`.
-- As we've seen before, tests are run using the `go test` command.
+- Test files live next to the files they are testing and they *must* use `_test.go` as suffix
+- Black box testing can be ensured by declaring tests in the `*_test` package. The compiler ignores packages ending in `_test` and allows them in the same directory
+- Tests *must* be in the format `Test<Name>(*testing.T)`
+- As we've seen before, tests are run using the `go test` command
 .code fundamentals/go_testing.go /START OMIT/,/END OMIT/
 
 * testing.T important methods
@@ -538,13 +538,15 @@ Write a test for each of the methods of the `OrderRepo`. Use the documentation i
 We can now test the `OrderRepo` in isolation!
 
 * Final progress checkpoint!
+In our 3-hour workshop we have:
+
 - Defined the `Item` model & the `Order` model
 - Implemented `OrderRepo` to save, find & delete orders
 - Implement the Orders REST server & manually tested it
 - Decoupled the Orders application from its database
 - Unit tested the `OrderRepo`
 
-.image https://media.giphy.com/media/10hO3rDNqqg2Xe/giphy.gif _ 600
+.image https://media.giphy.com/media/10hO3rDNqqg2Xe/giphy.gif _ 550
 
 
 * Further material
