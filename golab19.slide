@@ -159,9 +159,8 @@ Fill in `models/item.go` with new fields.
 .code exercises/ex_define_item.go
 Uncomment `models/item_define_test.go` and run it to see it pass.
 .code exercises/ex_define_item_test_run.go
-
-We will discuss testing later, but passing tests ensure we are on the same page.
-.image https://media.giphy.com/media/143vPc6b08locw/giphy.gif _ 250
+*Solution*:
+.code exercises/ex_item_solution.go
 
 * Initializing Structs 
 Structs are initialized in an analogous way to primitive variables. 
@@ -175,11 +174,15 @@ Structs are initialized in an analogous way to primitive variables.
 
 .play fundamentals/go_struct_print.go /START OMIT/,/END OMIT/
 
-* Exercise - Create some items
+* Exercise - Create & print some items
 Fill in `cmd/server.go` to create & print some items.
-Run your program with
+Run your program and see it print out your created items
 .code exercises/ex_go_run_main.go
-.image https://media.giphy.com/media/12uXi1GXBibALC/giphy.gif _ 350 
+*Solution*:
+.code exercises/ex_create_item_solution.go
+
+.image https://media.giphy.com/media/12uXi1GXBibALC/giphy.gif _ 350
+
 
 * Accessing struct fields 
 Struct fields are accessed using the `.` operator.
@@ -202,6 +205,8 @@ The value of `iota` starts from 0 in each discreet `const` block.
 .code exercises/ex_order_status.go
 Uncomment `models/order_status_test.go` and run it to see it pass.
 .code exercises/ex_order_status_test_run.go
+*Solution*:
+.code exercises/ex_order_status_solution.go
 .image https://media.giphy.com/media/1sSWWMNnaZLlm/giphy.gif _ 350
 
 * Functions 
@@ -218,11 +223,13 @@ Exported struct methods are accessed using the `.` operator.
 .play fundamentals/go_methods.go /START OMIT/,/END OMIT/
 
 * Exercise - Print the price of a menu Item
-Fill in our `models/item.go` with a `PrintWithPrice()` method that will return the price for the item.
+Fill in our `models/item.go` with a `PrintWithPrice()` method.
 .code exercises/ex_price_item.go
 Uncomment `models/item_price_test.go` and run it to see it pass.
 .code exercises/ex_price_item_test_run.go
-.image https://media.giphy.com/media/4lf1L0axY1vyM/giphy.gif _ 350
+*Solution*:
+.code exercises/ex_item_price_solution.go
+.image https://media.giphy.com/media/4lf1L0axY1vyM/giphy.gif _ 250
 
 * Pointers 
 Pointers allow us to point to the memory space of a value.
@@ -249,12 +256,12 @@ Only methods declared on pointer receivers can make changes to instance they are
 .play fundamentals/go_pointer_methods.go /START OMIT/,/END OMIT/
 
 * Exercise - Change price of a menu item
-Fill in our `models/item.go` with a `ChangePrice` method that will change the price & currency code of a menu item.
+Fill in our `models/item.go` with a `ChangePrice` method.
 .code exercises/ex_change_price_item.go
 Uncomment `models/item_change_price_test.go` and run it to see it pass.
 .code exercises/ex_change_price_item_test_run.go
-
-.image https://media.giphy.com/media/aRjH97A7rK74c/giphy.gif _ 250
+*Solution*:
+.code exercises/ex_item_change_price_solution.go
 
 * Arrays
 In Go, arrays are:
@@ -294,8 +301,10 @@ Fill in `models/order.go` with the models we have so far:
 .code exercises/ex_order.go
 Uncomment `models/order_define_test.go` and run it to see it pass.
 .code exercises/ex_order_test_run.go
+*Solution*:
+.code exercises/ex_order_solution.go
 
-.image https://media.giphy.com/media/tZaFa1m8UfzXy/giphy.gif _ 300
+.image https://media.giphy.com/media/tZaFa1m8UfzXy/giphy.gif _ 250
 
 * Control flow
 The `if` statement looks as it does in other languages, except that the `()` are removed and the `{}` are required.
@@ -342,10 +351,19 @@ They return the zero value of the value type when attempting to retrieve a non-e
 Our in memory database is implemented using a `map`.
 
 * Exercise - Implement the OrderRepo
-Fill in `repo/order_repo.go` to allow us to save, find and delete orders.
+Fill in `repo/order_repo.go` to allow us to save, find and delete orders using its reference our `db.DB`.
 .code exercises/ex_order_repo.go
 Uncomment `repo/order_repo_test.go` and run it to see it pass.
 .code exercises/ex_order_repo_test_run.go
+
+* Exercise - Create & save an order
+Fill in `cmd/server.go` with a new order containing the previously created items.
+Save the order to the repo and print it out in the same way as done previously with the items.
+Run your program with
+.code exercises/ex_go_run_main.go
+and see it print out your created order.
+
+.image https://media.giphy.com/media/3o751YUaBEePF6VMJy/giphy.gif _ 300
 
 * Progress checkpoint!
 So far, we have:
