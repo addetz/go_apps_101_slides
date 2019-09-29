@@ -1,6 +1,7 @@
 package main
 
 import "fmt"
+
 //START OMIT
 type Person struct {
 	Name string

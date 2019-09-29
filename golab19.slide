@@ -30,16 +30,16 @@ Software engineer (Backend) at Deliveroo, London
 
 - Initially built in Ruby on Rails, *Deliveroo* is a Go convert!
 - Most of our new *Consumer* projects are written in Go.
-- Among many projects, Go already powers our restaurant list.
+- Among many projects, Go already powers our *restaurant* *list*.
 
 .image images/deliveroo-florence-no-logo.png _ 800
 
 * Workshop goals 
 We will spend the next 3 or so hours together learning *Go* fundamentals and experimenting with *Go* apps. 
-The workshop will be modular, with each section building on top of the previous one. 
+The workshop will be modular, with each section building on top of the previous one.
+Solutions will be provided for each exercise.
 
-At the end, you will have built: 
-
+At the end, you will have built:
 - An app which saves food orders to an in-memory database 
 - An app which presents food orders via REST
 - An app which is easy to extend and test
@@ -94,8 +94,7 @@ We have cloned our repo into `$GOPATH/src/github.com`.
 This allows `Go` modules to resolve all our project dependencies locally, since the path matches the paths we have declared for import.
 
 * Skeleton of our repo
-Let's explore our repo...
-.link https://github.com/addetz/go_apps_101 github.com/addetz/go_apps_101
+Let's explore our cloned repo...
 .code exercises/repo_structure.go /START OMIT/,/END OMIT/
 .image https://media.giphy.com/media/vl8ncD72EnhoA/giphy.gif _ 300
 
@@ -117,10 +116,11 @@ We format & print strings using the `fmt` package.
 Print statements use verbs which are usually preceded by `%`.
 
 .play fundamentals/go_print.go /START OMIT/,/END OMIT/
-.image https://media.giphy.com/media/gw3IWyGkC0rsazTi/giphy.gif _ 250
+.image https://media.giphy.com/media/gw3IWyGkC0rsazTi/giphy.gif _ 350
 
 * Zero values
 Variables declared without an explicit initial value are given their zero value.
+
 The zero value is:
 
 - `0` for numeric types,
@@ -130,7 +130,6 @@ The zero value is:
 .play fundamentals/go_zero.go /START OMIT/,/END OMIT/
 
 * Declaring variables
-As previously mentioned variables that are not initialized get a _zero_ value.
 There are 3 ways to initialize variables in Go:
 
 .play fundamentals/go_var_init.go
@@ -181,7 +180,7 @@ Run your program and see it print out your created items
 *Solution*:
 .code exercises/ex_create_item_solution.go
 
-.image https://media.giphy.com/media/12uXi1GXBibALC/giphy.gif _ 350
+.image https://media.giphy.com/media/12uXi1GXBibALC/giphy.gif _ 400
 
 
 * Accessing struct fields 
@@ -217,7 +216,7 @@ They are declared using the `func` keyword and support short hand notation with 
 
 * Methods 
 Methods allow us to namespace a function to a receiver. 
-The function receiver is the implicit first argument of a function. 
+The function receiver is the _implicit_ _first_ _argument_ of a function.
 Exported struct methods are accessed using the `.` operator. 
 
 .play fundamentals/go_methods.go /START OMIT/,/END OMIT/
@@ -229,12 +228,12 @@ Uncomment `models/item_price_test.go` and run it to see it pass.
 .code exercises/ex_price_item_test_run.go
 *Solution*:
 .code exercises/ex_item_price_solution.go
+
 .image https://media.giphy.com/media/4lf1L0axY1vyM/giphy.gif _ 250
 
 * Pointers 
 Pointers allow us to point to the memory space of a value.
 The zero value of a pointer is `nil`.
-
 - To indicate we are expecting a pointer we use the `*` operator.
 - To get the address of a value, we use the `&` operator.
 
@@ -251,7 +250,7 @@ As a rule of thumb, use pointers over values when:
 
 
 * Methods on pointer receivers
-Only methods declared on pointer receivers can make changes to instance they are being called.
+Only methods declared on pointer receivers can make changes to their receiver.
 
 .play fundamentals/go_pointer_methods.go /START OMIT/,/END OMIT/
 
@@ -303,11 +302,12 @@ Uncomment `models/order_define_test.go` and run it to see it pass.
 .code exercises/ex_order_test_run.go
 *Solution*:
 .code exercises/ex_order_solution.go
-
 .image https://media.giphy.com/media/tZaFa1m8UfzXy/giphy.gif _ 250
 
 * Control flow
-The `if` statement looks as it does in other languages, except that the `()` are removed and the `{}` are required.
+The `if` statement looks as it does in other language
+- except that the `()` are removed and the `{}` are required.
+
 `if` also supports short-hand notation.
 All variables are then _only_ defined in statement scope.
 
@@ -319,13 +319,13 @@ The two most common ways to traverse arrays & slices in Go are the `for`-loop an
 .play fundamentals/go_range.go /START OMIT/,/END OMIT/
 
 * Exercise - Implement Order total
-Fill in `models/order.go` with a `Total()` method.
-This should calculate the order total of the items array by using the `range` operator. 
+Fill in `models/order.go` with a `Total()` method to calculate the total of the items.
+*Note:* It is considered idiomatic in Go to put `Get` into getters names.
 .code exercises/ex_order_total.go
 Uncomment `models/order_total_test.go` and run it to see it pass
 .code exercises/ex_order_total_test_run.go
-
-*Note:* It is considered idiomatic in Go to put `Get` into getters names.
+*Solution*:
+.code exercises/ex_order_total_solution.go
 
 .image https://media.giphy.com/media/BMBMMfVxZ2lOM/giphy.gif _ 300
 
@@ -351,19 +351,21 @@ They return the zero value of the value type when attempting to retrieve a non-e
 Our in memory database is implemented using a `map`.
 
 * Exercise - Implement the OrderRepo
-Fill in `repo/order_repo.go` to allow us to save, find and delete orders using its reference our `db.DB`.
+Fill in `repo/order_repo.go` to allow us to save, find and delete orders using the  `db.DB`.
 .code exercises/ex_order_repo.go
 Uncomment `repo/order_repo_test.go` and run it to see it pass.
 .code exercises/ex_order_repo_test_run.go
+*Solution*:
+.code exercises/ex_order_repo_solution.go
 
 * Exercise - Create & save an order
 Fill in `cmd/server.go` with a new order containing the previously created items.
-Save the order to the repo and print it out in the same way as done previously with the items.
+Save the order to the repo and print it out in the same way as with the items.
 Run your program with
 .code exercises/ex_go_run_main.go
-and see it print out your created order.
-
-.image https://media.giphy.com/media/3o751YUaBEePF6VMJy/giphy.gif _ 300
+*Solution*:
+.code exercises/ex_order_create_solution.go
+.image https://media.giphy.com/media/3o751YUaBEePF6VMJy/giphy.gif _ 400
 
 * Progress checkpoint!
 So far, we have:
@@ -372,7 +374,7 @@ So far, we have:
 - Defined the `Order` model which contains one or more items
 - Implemented `OrderRepo` to save, find & delete orders
 
-Now on to share our orders ... WITH THE WORLD!
+Now on to share our orders ... *WITH* *THE* *WORLD*!
 
 .image https://media.giphy.com/media/iBEW5Amz0ztza/giphy.gif _ 300
 
@@ -457,8 +459,8 @@ The `ConfigureServer()` function defined in `handlers/config.go` defines the rou
 Look at `handlers/handlers.go` and fill in the missing parts to make the method compile/run.
 You should use the `writeResponse` helper method to write a REST response
 .code exercises/ex_handlers.go
-There is no test to run as exercise verification for now.
-
+*Solution*:
+.code exercises/ex_handlers_solution.go
 
 * Run the Order Server
 .code exercises/ex_run_server.go
@@ -520,8 +522,11 @@ In Go, *interfaces* are defined in the calling code not in the defining code.
 Extract an interface for our DB that `OrderRepo` can use as a dependency.
 *NOTE*: Remember that we define interfaces in calling code in `Go`.
 .code exercises/ex_db_interface.go
-If the methods are defined correctly in the interface, the compiler will cast the concrete `db.DB` to our interface. Make sure the server still works.
+If defined correctly, the compiler will cast the concrete `db.DB` passed to the `OrderRepo`. Make sure the server still works.
 .code exercises/ex_run_server.go
+*Solution*:
+.code exercises/ex_interfaces_solution.go
+
 
 * Unit Testing
 - Test files live next to the files they are testing and they *must* use `_test.go` as suffix
@@ -550,10 +555,11 @@ The usage of the `moq` command is:
 * Exercise - Generate a mock & write a test for OrderRepo
 Generate a mock for the `DB` interface.
 .code exercises/ex_generate_mock.go
-Write a test for each of the methods of the `OrderRepo`. Use the documentation in the generated file to mock return values.
+Write tests for `OrderRepo` in `repo/order_repo_mocks_test.go` using this mock.
+Use the documentation in the generated file to mock return values.
 .code exercises/ex_mock_funcs.go
-
-We can now test the `OrderRepo` in isolation!
+*Solution*:
+.code exercises/ex_db_mock_solution.go
 
 * Final progress checkpoint!
 In our 3-hour workshop we have:

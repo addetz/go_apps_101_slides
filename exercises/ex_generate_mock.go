@@ -1,2 +1,1 @@
-$ cd repo
-$ moq -out db_mock.go . DB
+$ cd repo && moq -out db_mock.go . DB

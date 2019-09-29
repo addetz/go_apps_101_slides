@@ -1,0 +1,1 @@
+$ git checkout origin/exercise-order-total models/order.go
