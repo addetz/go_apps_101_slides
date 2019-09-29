@@ -572,6 +572,14 @@ In our 3-hour workshop we have:
 
 .image https://media.giphy.com/media/10hO3rDNqqg2Xe/giphy.gif _ 550
 
+* Full Workshop Solution
+
+The fully working *solution* can be checked out at
+.code exercises/ex_full_solution.go
+
+.image https://media.giphy.com/media/s2qXK8wAvkHTO/giphy.gif _ 500
+
+
 
 * Further material
 Go tutorials
