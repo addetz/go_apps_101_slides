@@ -4,14 +4,12 @@ import "fmt"
 
 //START OMIT
 func main() {
-    books := map[string]string {
-        "The bell jar" : "Sylvia Plath",
-        "1984" : "George Orwell",
+    fruits := map[string]float64 {
+        "Apple" : 0.75,
+        "Banana" : 1.5,
     }
-    fmt.Println(books)
-    v, ok := books["1984"]
-    fmt.Printf("books[%s]=%s with ok: %t \n", "1984",v, ok)
-    u, ok := books["Mrs. Dalloway"]
-    fmt.Printf("books[%s]= %s with ok: %t \n", "Mrs. Dalloway", u, ok)
+    fmt.Println(fruits)
+    fmt.Printf("fruits[%s]= %f \n", "Apple", fruits["Apple"])
+    fmt.Printf("fruits[%s]= %f \n", "Kiwi", fruits["Kiwi"])
 }
 //END OMIT

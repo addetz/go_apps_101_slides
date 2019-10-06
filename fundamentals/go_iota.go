@@ -3,8 +3,9 @@ package main
 import "fmt"
 
 //START OMIT
+type DayOfWeek int
 const (
-	MON int = iota
+	MON DayOfWeek = iota
 	TUE
 	WED
 	THUR

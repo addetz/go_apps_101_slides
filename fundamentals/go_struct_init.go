@@ -3,16 +3,16 @@ package main
 import "fmt"
 
 //START OMIT
-type Person struct {
+type Fruit struct {
 	Name string
-	Title string
+	Price float64
 }
 
 func main() {
-	var zero Person 
+	var zero Fruit
 	fmt.Printf("%v \n", zero)
 	
-	p := Person { Name: "Adelina", Title: "Miss" }
+	p := Fruit { Name: "Banana", Price: 0.75 }
 	fmt.Printf("%v", p)
 }
 //END OMIT

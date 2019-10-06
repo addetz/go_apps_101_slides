@@ -1,20 +1,18 @@
 package main
 
+//START OMIT
 import (
     "fmt"
-    "html"
     "log"
     "net/http"
-    "strings"
 )
-//START OMIT
+
 func main() {
     http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        p := strings.TrimLeft(html.EscapeString(r.URL.Path), "/")
-        fmt.Fprintf(w, "%s %s %s",
-            strings.ToUpper(p), strings.Title(p), strings.ToLower(p))
+        fmt.Fprintf(w, "Welcome to my first Go server!")
     })
-    fmt.Println("Starting server... ")
-    log.Fatal(http.ListenAndServe(":8080", nil))
+    fmt.Println("Starting server on 3030...")
+    log.Fatal(http.ListenAndServe(":3030", nil))
 }
 //END OMIT
+

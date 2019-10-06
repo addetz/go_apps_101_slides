@@ -5,8 +5,8 @@ How to build & test them
 Adelina Simion
 Software Engineer, Deliveroo
 adelina.simion@deliveroo.co.uk
-@DeliverooEng
 @classic_addetz
+@DeliverooEng
 
 * About me
 Software engineer (Backend) at Deliveroo, London
@@ -20,10 +20,9 @@ Software engineer (Backend) at Deliveroo, London
 * About Deliveroo
 
 - Deliveroo is an online food delivery company founded in 2013 in London
-- Currently operating in 13 markets
+- Currently operating in 13 countries
 - The business is divided into 3 groups: *Consumer*, *Rider* & *Restaurants*
 - I am working in the *Consumer* group, focused on improving consumer experience
-
 .image images/deliveroo-rider.png _ 600
 
 * Go at Deliveroo
@@ -31,12 +30,11 @@ Software engineer (Backend) at Deliveroo, London
 - Initially built in Ruby on Rails, *Deliveroo* is a Go convert!
 - Most of our new *Consumer* projects are written in Go.
 - Among many projects, Go already powers our *restaurant* *list*.
-
 .image images/deliveroo-florence-no-logo.png _ 800
 
 * Workshop goals 
-We will spend the next 3 or so hours together learning *Go* fundamentals and experimenting with *Go* apps. 
-The workshop will be modular, with each section building on top of the previous one.
+We will spend the next 3 hours learning *Go* fundamentals and building a *Go* app.
+The workshop will be modular, with section building on top of each other.
 Solutions will be provided for each exercise.
 
 At the end, you will have built:
@@ -44,14 +42,16 @@ At the end, you will have built:
 - An app which presents food orders via REST
 - An app which is easy to extend and test
 
-.image images/gopher_go.png _ 500
+Have lots of *fun* and ask lots of *questions*!
+
+.image images/gopher_go.png _ 450
 
 * Agenda 
 - Discuss Go fundamentals as needed
 - Setup and explore the repo starting point 
 - Implement the order processing app
 - Present our orders via REST and think about our error cases
-- Unit testing & mock generation of the app
+- Unit testing & mock generation of the app (Optional)
 - Round up & finish off the day 
 
 .image images/golab-logo.png _ 700
@@ -59,12 +59,23 @@ At the end, you will have built:
 * Setup
 - Installation instructions found on the project `README`
 .link https://github.com/addetz/go_apps_101#go-setup
-- Setup your Go environment
-- Setup `$GOPATH` & `$GO111MODULE`
-- Clone our repo in your `$GOPATH/src/github.com`
-- Develop with any IDE you prefer
-.link https://github.com/addetz/go_apps_101 github.com/addetz/go_apps_101
+- Setup your Go environment by installing the Go tools - install Go 1.12 or newer
+.link https://golang.org/doc/install#install
+- Make sure you add the `bin` directory to your `PATH` as well, as described in the installation steps.
+.code exercises/ex_setup_bin.go
+
 .image images/go_logo.png _ 400
+
+
+* Setup cont'd
+The default Go workspace directory is `$HOME/go`.
+If you'd like to use a different directory, you will need to setup your `GOPATH` environment variable.
+.link https://github.com/golang/go/wiki/SettingGOPATH
+
+Clone our repo in your `$GOPATH/src/github.com`
+
+Develop with any IDE you prefer
+.link https://github.com/addetz/go_apps_101 github.com/addetz/go_apps_101
 
 
 * Exercise - Hello, world!
@@ -75,28 +86,35 @@ Run your code with
 .image https://media.giphy.com/media/MeAJb6e5Obb8Y/giphy.gif
 
 * Packages
-Go files *must* start with a `package` declaration.
-It is *encouraged*, but not required that the package name be the same as its folder.
-Executable programs must have a `main` package that declares a `main()` function that receives *no* *arguments* and has *no* *return* values.
-Only one `main` method may be declared per package.
+- Go files *must* start with a `package` declaration.
+- It is *encouraged*, but not required that the package name be the same as its folder.
+- Executable programs must have a `main` package that declares a `main()` function that receives *no* *arguments* and has *no* *return* values.
+- Only one `main` method may be declared per package.
+- The main function is the entry point of the application.
 .code fundamentals/go_packages.go
-.image https://media.giphy.com/media/3oKIP9cJEOO9ljKoCc/giphy.gif _ 200
 
 * Importing packages with Go modules
-Go does not have a central repository for downloading packages.
 Packages are imported using the `import` keyword.
 .code fundamentals/go_imports.go /START OMIT/,/END OMIT/
-Packages are then downloaded and installed with
+Go modules, Go's dependency management system, downloads and installs the package using the `go` `get` command.
 .code fundamentals/go_get_package.go
-Once the download is complete, it saves the package content inside `github.com/external/package` directory under `$GOPATH/src`
-
-We have cloned our repo into `$GOPATH/src/github.com`.
-This allows `Go` modules to resolve all our project dependencies locally, since the path matches the paths we have declared for import.
+Once the download is complete, the package content is saved inside `$GOPATH/src/github.com/external/package`.
+.image https://media.giphy.com/media/3oKIP9cJEOO9ljKoCc/giphy.gif _ 200
 
 * Skeleton of our repo
 Let's explore our cloned repo...
 .code exercises/repo_structure.go /START OMIT/,/END OMIT/
 .image https://media.giphy.com/media/vl8ncD72EnhoA/giphy.gif _ 300
+
+* Importing internal project files
+We have cloned our repo into `$GOPATH/src/github.com`.
+This allows `Go` modules to resolve all our project dependencies locally, since the path matches the paths we have declared for import.
+
+Every `package` should be viewed as a closed independent part of the application.
+Even inside our project, import paths are relative to the `GOPATH`.
+
+.code fundamentals/go_imports_example.go
+
 
 * What we will build 
 .image images/app_diagram_overview.png
@@ -150,10 +168,17 @@ For example, `Pi` is exported from the `math` package.
 
 .play fundamentals/go_exported_names.go
 
-When importing a package, you can refer only to its exported names. 
+When importing a package, you can refer only to its _exported_ names.
 Any _unexported_ names are not accessible from outside the package.
 
-* Exercise  - Define Item struct
+* Exported mix-and-match
+Structs themselves can be exported or unexported.
+The scope of structs takes precedence over field scope.
+The fields of structs can be a mix-and-match of exported and unexported fields.
+.code fundamentals/go_exported_mix.go /START OMIT/,/END OMIT/
+.image https://media.giphy.com/media/3o6MbnllyHzBY4CkKY/giphy.gif _ 300
+
+* Exercise 1 - Define Item struct
 Fill in `models/item.go` with new fields.
 .code exercises/ex_define_item.go
 Uncomment `models/item_define_test.go` and run it to see it pass.
@@ -173,7 +198,7 @@ Structs are initialized in an analogous way to primitive variables.
 
 .play fundamentals/go_struct_print.go /START OMIT/,/END OMIT/
 
-* Exercise - Create & print some items
+* Exercise 2 - Create & print some items
 Fill in `cmd/server.go` to create & print some items.
 Run your program and see it print out your created items
 .code exercises/ex_go_run_main.go
@@ -183,9 +208,8 @@ Run your program and see it print out your created items
 .image https://media.giphy.com/media/12uXi1GXBibALC/giphy.gif _ 400
 
 
-* Accessing struct fields 
-Struct fields are accessed using the `.` operator.
-
+* Accessing struct fields
+- Struct fields are accessed using the `.` operator.
 - _Exported_ fields are accessed from any package
 - _Unexported_ fields are only available in the package the `struct` is defined in
 
@@ -200,7 +224,7 @@ The value of `iota` starts from 0 in each discreet `const` block.
 
 .play fundamentals/go_iota.go /START OMIT/,/END OMIT/
 
-* Exercise - Define the OrderStatus constant using iota
+* Exercise 3 - Define the OrderStatus constant using iota
 .code exercises/ex_order_status.go
 Uncomment `models/order_status_test.go` and run it to see it pass.
 .code exercises/ex_order_status_test_run.go
@@ -221,7 +245,7 @@ Exported struct methods are accessed using the `.` operator.
 
 .play fundamentals/go_methods.go /START OMIT/,/END OMIT/
 
-* Exercise - Print the price of a menu Item
+* Exercise 3 - Print the price of a menu Item
 Fill in our `models/item.go` with a `PrintWithPrice()` method.
 .code exercises/ex_price_item.go
 Uncomment `models/item_price_test.go` and run it to see it pass.
@@ -254,7 +278,7 @@ Only methods declared on pointer receivers can make changes to their receiver.
 
 .play fundamentals/go_pointer_methods.go /START OMIT/,/END OMIT/
 
-* Exercise - Change price of a menu item
+* Exercise 4 - Change price of a menu item
 Fill in our `models/item.go` with a `ChangePrice` method.
 .code exercises/ex_change_price_item.go
 Uncomment `models/item_change_price_test.go` and run it to see it pass.
@@ -295,7 +319,7 @@ A slice is a descriptor of an array segment. It consists of :
 
 .image images/golang_slice_internals.png _ 500
 
-* Exercise - Define the Order model
+* Exercise 5 - Define the Order model
 Fill in `models/order.go` with the models we have so far: 
 .code exercises/ex_order.go
 Uncomment `models/order_define_test.go` and run it to see it pass.
@@ -307,18 +331,30 @@ Uncomment `models/order_define_test.go` and run it to see it pass.
 * Control flow
 The `if` statement looks as it does in other language
 - except that the `()` are removed and the `{}` are required.
-
-`if` also supports short-hand notation.
-All variables are then _only_ defined in statement scope.
-
 .play fundamentals/go_control_flow.go /START OMIT/,/END OMIT/
+.image https://media.giphy.com/media/h8y265b9iKtzKT0pDj/giphy.gif _ 400
 
-* For loops & Ranges
-The two most common ways to traverse arrays & slices in Go are the `for`-loop and the `range`. The `range` is the most popular.
+* Control flow shorthand
+`if` also supports short-hand notation.
+In this case, all variables are _only_ defined in statement scope.
+.play fundamentals/go_control_flow_shorthand.go /START OMIT/,/END OMIT/
+.image https://media.giphy.com/media/EimNpKJpihLY4/giphy.gif _ 350
 
+* For loops
+The `for` loop is defined in the same way as other languages
+- except that the `()` are removed and the `{}` are required.
+It also supports short-hand notation.
+.play fundamentals/go_loop.go /START OMIT/,/END OMIT/
+
+* Ranges
+The `range` is the most popular way to traverse arrays and slices in Go.
+The range returns two parameters:
+- the index
+- the item at that index
+*NOTE*: Sometimes the index is not useful. We can use the `underscore` to ignore it.
 .play fundamentals/go_range.go /START OMIT/,/END OMIT/
 
-* Exercise - Implement Order total
+* Exercise 6 - Implement Order total
 Fill in `models/order.go` with a `Total()` method to calculate the total of the items.
 *Note:* It is considered idiomatic in Go to put `Get` into getters names.
 .code exercises/ex_order_total.go
@@ -330,27 +366,38 @@ Uncomment `models/order_total_test.go` and run it to see it pass
 .image https://media.giphy.com/media/BMBMMfVxZ2lOM/giphy.gif _ 300
 
 * Multiple return values
-Go supports multiple return values. Notice the `()` around them.
-This feature is used often in idiomatic Go, for example to return both result and error values from a function.
-
+- Go supports multiple return values. Notice the `()` around them.
+- The `underscore` can be used to disregard any return values that are not useful.
+- Return values cannot be silently disregarded. The number of return values must match the number assignments.
 .play fundamentals/go_multiple_return.go /START OMIT/,/END OMIT/
 
-*Note:* It is good practice in Go to handle error cases first.
 
-* Our in memory database
-We will be using an in memory database to save our orders.
+* Errors
+- Multiple return values are used in idiomatic Go for error handling.
+- By convention, errors are the last return value and have type `error`.
+- `errors.New` constructs a basic error value with the given error message.
+- It is good practice in Go to handle error cases first.
+.play fundamentals/go_errors.go /START OMIT/,/END OMIT/
+
+* OrderRepo in-memory database
+The `OrderRepo` will be using an in-memory database to save orders.
 This is implemented in `db/db.go`. It exposes the following methods.
 .code exercises/ex_db_methods.go
-We can use this database by passing a reference of it in the `OrderRepo`.
+`OrderRepo` uses this database by holding a reference to it.
 .code exercises/ex_order_repo_def.go
 
 * Maps
-Maps are powerful data structures that associate keys and values.
-They return the zero value of the value type when attempting to retrieve a non-existent key. We use the extra `ok` return value to check whether a key exists.
+*Maps* are powerful data structures that associate keys and values.
+As seen previously, `map` is a reserved keywords.
 .play fundamentals/go_maps.go /START OMIT/,/END OMIT/
-Our in memory database is implemented using a `map`.
+The `OrderRepo` in-memory database is implemented using a `map`.
 
-* Exercise - Implement the OrderRepo
+* Checking for key existence in maps
+As previously seen, *maps* return the zero value of the value type when attempting to retrieve a non-existent key.
+The optional `ok` return value can be used to check whether a key exists.
+.play fundamentals/go_maps_key_existence.go /START OMIT/,/END OMIT/
+
+* Exercise 7 - Implement the OrderRepo
 Fill in `repo/order_repo.go` to allow us to save, find and delete orders using the  `db.DB`.
 .code exercises/ex_order_repo.go
 Uncomment `repo/order_repo_test.go` and run it to see it pass.
@@ -358,7 +405,7 @@ Uncomment `repo/order_repo_test.go` and run it to see it pass.
 *Solution*:
 .code exercises/ex_order_repo_solution.go
 
-* Exercise - Create & save an order
+* Exercise 8 - Create & save an order
 Fill in `cmd/server.go` with a new order containing the previously created items.
 Save the order to the repo and print it out in the same way as with the items.
 Run your program with
@@ -374,7 +421,7 @@ So far, we have:
 - Defined the `Order` model which contains one or more items
 - Implemented `OrderRepo` to save, find & delete orders
 
-Now on to share our orders ... *WITH* *THE* *WORLD*!
+Now on to share the orders ... *WITH* *THE* *WORLD*!
 
 .image https://media.giphy.com/media/iBEW5Amz0ztza/giphy.gif _ 300
 
@@ -388,26 +435,23 @@ Now on to share our orders ... *WITH* *THE* *WORLD*!
 .image https://media.giphy.com/media/xUOxf9lJKcBDrE6qmk/giphy.gif _ 235
 
 * Orders API design
-For our Orders REST API, _orders_ are our _resources_.
-We will expose the following endpoints:
+For the Orders REST API, _orders_ are the _resources_ and `JSON` is the response type.
+The server will expose the following endpoints:
 .code fundamentals/go_orders_api.go
-We will return `JSON` responses.
 
 * Anatomy of the Orders REST Server
 
-- Our server exposes *endpoints* which are accessible by the client.
+- The server exposes *endpoints* which are accessible by the client.
 - Each endpoint has a *handler* function bound to it which calls the appropriate `OrderRepo` method
 - The handler function then returns the HTTP response & status code to the server
 - The server forwards the handler's response to the client.
 
 .image https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif _ 300
 
-* Exercise - Starting a simple server in Go
+* Starting a simple server in Go
 Creating & starting servers in Go is very simple.
-You will see this code in `echo/echo.go`
+`echo/echo.go` shows an example of a simple echo server.
 .code exercises/ex_simple_server.go /START OMIT/,/END OMIT/
-Run the server and go to any path at `localhost:8080` to see the server echo our path.
-.code exercises/ex_simple_server_run.go
 
 * What we will build (in more detail)
 The Orders REST server has the following main components.
@@ -415,33 +459,38 @@ The Orders REST server has the following main components.
 
 
 * The Orders REST Server
-Let's examine what `cmd/server` does ...
+Let's examine what `cmd/server.go` does ...
 
 - Creates two items & an order as a testing starting point
 - Creates a new `DB` and passes the reference to `OrderRepo`
 - Creates a `Handler` and passes it a reference to `OrderRepo`
 - Creates a router by calling the `ConfigureServer()` function
-- Starts the router on port `8080`
+- Starts the router on port `3000`
 
 .image https://media.giphy.com/media/3o7TKAK6dCfEQoTC2A/giphy.gif _ 350
 
 * JSON marshal
-
-Go offers built in support JSON encoding & decoding of custom data structures. Only exported fields will be encoded/decoded in JSON.
-Tags on struct field declarations allow us to customize the encoded JSON key names.
-*NOTE*: It is not considered idiomatic JSON to have uppercased fields.
+- Go offers built in support `JSON` encoding & decoding of `structs`.
+- Only exported fields will be encoded/decoded in `JSON`.
+- Tags on struct field declarations allow us to customize the encoded JSON key names.
 .play fundamentals/go_json_marshal.go /START OMIT/,/END OMIT/
-
+*NOTE*: The JSON tags are not required, but it is not considered idiomatic JSON to have uppercased fields.
 
 * JSON unmarshal
-
-- The JSON marshal/encode operation converts structs into bytes which can be sent to HTTP responses.
-- The JSON unmarshal/decode operation converts bytes back into structs to be used.
+- The JSON marshal/encode operation converts structs into bytes.
+- The JSON unmarshal/decode operation converts bytes back into structs.
 .play fundamentals/go_json_unmarshal.go /START OMIT/,/END OMIT/
 
+* JSON usage
+- The `JSON` marshal converts structs into `bytes`.
+- The `JSON` unmarshal converts bytes into `structs`.
+- `JSON` encoded bytes can be sent as an `HTTP` *response*.
+- `JSON` decoded structs can be manipulated by the server as an `HTTP` *request*.
+.image https://media.giphy.com/media/fwfwF1WhxpGOk/giphy.gif _ 400
+
 * Handlers
-As previously mentioned handlers are functions which will be invoked when the client hits a route/endpoints.
-The `ConfigureServer()` function defined in `handlers/config.go` defines the route & handler associations
+Handlers are functions which will be invoked when the client hits a route/endpoints.
+The `ConfigureServer()` function defined in `handlers/config.go` defines the route & handler associations.
 
 .code exercises/ex_configure_server.go
 
@@ -455,14 +504,14 @@ The `ConfigureServer()` function defined in `handlers/config.go` defines the rou
 
 .image https://media.giphy.com/media/3ofT5PzM67qEoeihmo/giphy.gif _ 400
 
-* Exercise - Implement Order Server API handlers
-Look at `handlers/handlers.go` and fill in the missing parts to make the method compile/run.
-You should use the `writeResponse` helper method to write a REST response
+* Exercise 9 - Implement OrderIndex & OrderDelete
+Fill in the missing parts of `OrderIndex` & `OrderDelete` methods in `handlers/handlers.go`.
+`writeResponse` is a helper method for writing an `HTTP` header, status & body.
 .code exercises/ex_handlers.go
 *Solution*:
 .code exercises/ex_handlers_solution.go
 
-* Run the Order Server
+* Exercise 10 - Run & test the Order Server
 .code exercises/ex_run_server.go
 
 - Test out the GET operations from the browser.
@@ -494,11 +543,11 @@ Therefore, we have had to do our testing manually. Some refactoring is needed!
 .image https://media.giphy.com/media/3o7btY356cSVYzmFS8/giphy.gif _ 450
 
 * Interfaces
-- To implement an interface in Go, we just need to implement its methods
-- Interfaces dynamically hold a reference to their underlying types
-- All structs implement the empty interface - `interface{}`
+- To implement an interface in Go, a `struct` just needs to implement its methods.
+- Interfaces dynamically hold a reference to their underlying types.
+- All structs implement the empty interface - `interface{}`.
 - `Structs` are referred to as *concrete* types, while `interfaces` are *abstract* types
-- The compiler will then automatically check that a type satisfies it
+- The compiler automatically check that a struct satisfies an interface
 - Interfaces are _implicitly_ defined in Go
 - This is known as *Duck* *Typing*
 
@@ -507,6 +556,11 @@ Therefore, we have had to do our testing manually. Some refactoring is needed!
 * Interfaces in action
 .play fundamentals/go_interfaces.go /START OMIT/,/END OMIT/
 
+* Implicitly casting to interfaces
+Once passed as an interface type to a function, the compiler converts the `struct` to the `interface` under the hood.
+Only the methods defined in the `interface` will now be accessible.
+.play fundamentals/go_interfaces_casting.go /START OMIT/,/END OMIT/
+
 * The power of interfaces
 Interfaces abstract code to make it more reusable, extensible and more testable.
 They are also a way to achieve *polymorphism* in Go.
@@ -514,13 +568,15 @@ They are also a way to achieve *polymorphism* in Go.
 - The concrete type does not need to know about any interface
 - We can write interfaces for concrete types that already exist
 - We can write interfaces for other people's types, or types that appear in other packages
+- We can have very close control of what external functions/methods are available in our code
 
 In Go, *interfaces* are defined in the calling code not in the defining code.
 
 
-* Exercise - Create a DB interface
+* Exercise 11 - Create a DB interface
 Extract an interface for our DB that `OrderRepo` can use as a dependency.
-*NOTE*: Remember that we define interfaces in calling code in `Go`.
+Remember that we define interfaces in calling code in `Go`.
+Fill in `repo/order_repo.go` with the interface definition.
 .code exercises/ex_db_interface.go
 If defined correctly, the compiler will cast the concrete `db.DB` passed to the `OrderRepo`. Make sure the server still works.
 .code exercises/ex_run_server.go
@@ -528,20 +584,20 @@ If defined correctly, the compiler will cast the concrete `db.DB` passed to the 
 .code exercises/ex_interfaces_solution.go
 
 
-* Unit Testing
+* Unit Testing (Optional)
 - Test files live next to the files they are testing and they *must* use `_test.go` as suffix
 - Black box testing can be ensured by declaring tests in the `*_test` package. The compiler ignores packages ending in `_test` and allows them in the same directory
 - Tests *must* be in the format `Test<Name>(*testing.T)`
 - As we've seen before, tests are run using the `go test` command
 .code fundamentals/go_testing.go /START OMIT/,/END OMIT/
 
-* testing.T important methods
+* testing.T important methods (Optional)
 The testing package contains some useful methods:
 .code fundamentals/go_testing_methods.go
 
 `Error` and `Fatal` both report a test failure, but `Error` will continue with test execution, where `Fatal` will end the test.
 
-* Generating mocks
+* Generating mocks (Optional)
 Mock generation allows us to generate interface stubs and use them in testing.
 We will use `moq`
 .link https://github.com/matryer/moq
@@ -552,7 +608,7 @@ Then we can start generating mocks easily.
 The usage of the `moq` command is:
 .code fundamentals/go_moq_usage.go
 
-* Exercise - Generate a mock & write a test for OrderRepo
+* Exercise 12 - Generate a mock & write a test for OrderRepo (Optional)
 Generate a mock for the `DB` interface.
 .code exercises/ex_generate_mock.go
 Write tests for `OrderRepo` in `repo/order_repo_mocks_test.go` using this mock.
@@ -568,7 +624,7 @@ In our 3-hour workshop we have:
 - Implemented `OrderRepo` to save, find & delete orders
 - Implement the Orders REST server & manually tested it
 - Decoupled the Orders application from its database
-- Unit tested the `OrderRepo`
+- Unit tested the `OrderRepo` (Optional)
 
 .image https://media.giphy.com/media/10hO3rDNqqg2Xe/giphy.gif _ 550
 
