@@ -78,7 +78,7 @@ Develop with any IDE you prefer
 .link https://github.com/addetz/go_apps_101 github.com/addetz/go_apps_101
 
 
-* Exercise - Hello, world!
+* Exercise 0 - Hello, world!
 Let’s test our Go setup by running `hello/hello_world.go`
 .play exercises/hello.go
 Run your code with 
@@ -205,7 +205,7 @@ Run your program and see it print out your created items
 *Solution*:
 .code exercises/ex_create_item_solution.go
 
-.image https://media.giphy.com/media/12uXi1GXBibALC/giphy.gif _ 400
+.image https://media.giphy.com/media/12uXi1GXBibALC/giphy.gif _ 450
 
 
 * Accessing struct fields
@@ -225,18 +225,19 @@ The value of `iota` starts from 0 in each discreet `const` block.
 .play fundamentals/go_iota.go /START OMIT/,/END OMIT/
 
 * Exercise 3 - Define the OrderStatus constant using iota
+Fill in `models/order_status.go` with status definitions.
 .code exercises/ex_order_status.go
 Uncomment `models/order_status_test.go` and run it to see it pass.
 .code exercises/ex_order_status_test_run.go
 *Solution*:
 .code exercises/ex_order_status_solution.go
-.image https://media.giphy.com/media/1sSWWMNnaZLlm/giphy.gif _ 350
+.image https://media.giphy.com/media/1sSWWMNnaZLlm/giphy.gif _ 300
 
 * Functions 
 Functions in Go are *first* *class* *citizens*, meaning they are primitives. 
 They are declared using the `func` keyword and support short hand notation with `:=`
 .play fundamentals/go_functions.go /START OMIT/,/END OMIT/
-.image https://media.giphy.com/media/n4WpP39mwWrmg/giphy.gif _ 350
+.image https://media.giphy.com/media/n4WpP39mwWrmg/giphy.gif _ 450
 
 * Methods 
 Methods allow us to namespace a function to a receiver. 
@@ -256,12 +257,17 @@ Uncomment `models/item_price_test.go` and run it to see it pass.
 .image https://media.giphy.com/media/4lf1L0axY1vyM/giphy.gif _ 250
 
 * Pointers 
-Pointers allow us to point to the memory space of a value.
-The zero value of a pointer is `nil`.
-- To indicate we are expecting a pointer we use the `*` operator.
-- To get the address of a value, we use the `&` operator.
+- Pointers allow us to point to the memory space of a value.
+- The zero value of a pointer is `nil`.
+- The `&` operator generates a pointer to its operand.
+- The * operator denotes the pointer's underlying value. This is known as _dereferencing_.
 
 .play fundamentals/go_pointers.go /START OMIT/,/END OMIT/
+
+* Making changes to structs
+Passing a struct without a pointer creates a function scoped copy of the parameter.
+Any changes made to the struct will only be made on the function copy and will not persist outside function scope.
+.play fundamentals/go_pointers_pass_by.go /START OMIT/,/END OMIT/
 
 * When to use pointers?
 As a rule of thumb, use pointers over values when:
@@ -279,7 +285,7 @@ Only methods declared on pointer receivers can make changes to their receiver.
 .play fundamentals/go_pointer_methods.go /START OMIT/,/END OMIT/
 
 * Exercise 4 - Change price of a menu item
-Fill in our `models/item.go` with a `ChangePrice` method.
+Fill in `models/item.go` with a `ChangePrice` method.
 .code exercises/ex_change_price_item.go
 Uncomment `models/item_change_price_test.go` and run it to see it pass.
 .code exercises/ex_change_price_item_test_run.go
@@ -450,7 +456,7 @@ The server will expose the following endpoints:
 
 * Starting a simple server in Go
 Creating & starting servers in Go is very simple.
-`echo/echo.go` shows an example of a simple echo server.
+`simple/server.go` shows an example of a simple hello server.
 .code exercises/ex_simple_server.go /START OMIT/,/END OMIT/
 
 * What we will build (in more detail)
