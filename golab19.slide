@@ -77,6 +77,13 @@ Clone our repo in your `$GOPATH/src/github.com`
 Develop with any IDE you prefer
 .link https://github.com/addetz/go_apps_101 github.com/addetz/go_apps_101
 
+* Setup finish
+For Go versions older than `1.13`, you will need to set your `GO111MODULE` environment variable.
+.code exercises/ex_setup_go111modules.go
+This environment variable allows us to download new dependencies in our project - more about this later.
+
+.image https://media.giphy.com/media/dW6SH3HDxZjbzUT0kF/giphy.gif _ 350
+
 
 * Exercise 0 - Hello, world!
 Let’s test our Go setup by running `hello/hello_world.go`
@@ -153,13 +160,12 @@ There are 3 ways to initialize variables in Go:
 .play fundamentals/go_var_init.go
 
 * Structs - the building blocks of Go
-We can define our own types in Go using _structs_.
-
-- A struct is an aggregate data type that groups together zero or more named values of arbitrary types as a single entity
+- A struct is an aggregate data type that groups together zero or more named values of arbitrary types
 - Each value is called a _field_
 - All of these fields are collected into a _single_ _entity_ that can be copied as a unit, passed to functions, stored in arrays etc.
+- _Structs_ do not have type hierarchy.
+- _Structs_ may have 0 or more fields.
 
-_Structs_ may have 0 or more fields. 
 .code fundamentals/go_structs.go
 
 * Exported vs unexported names
@@ -374,7 +380,7 @@ Uncomment `models/order_total_test.go` and run it to see it pass
 * Multiple return values
 - Go supports multiple return values. Notice the `()` around them.
 - The `underscore` can be used to disregard any return values that are not useful.
-- Return values cannot be silently disregarded. The number of return values must match the number assignments.
+- Return values cannot be silently disregarded. The number of assignments must match the number of return values.
 .play fundamentals/go_multiple_return.go /START OMIT/,/END OMIT/
 
 
