@@ -6,7 +6,7 @@ func main() {
 	var i int 
 	var s string
 
-	fmt.Println("Zero value int: ", i)
-	fmt.Println("Zero value string: ", s)
+	fmt.Printf("Zero value = %d for numeric type. \n", i)
+	fmt.Printf("Zero value = %s for string type. \n", s)
 }
 //END OMIT

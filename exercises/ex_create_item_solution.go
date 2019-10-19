@@ -1,1 +1,1 @@
-$ git checkout origin/exercise-create-items cmd/server.go
+$ git checkout origin/exercise-create-items items/main.go

@@ -47,10 +47,10 @@ Have lots of *fun* and ask lots of *questions*!
 .image images/gopher_go.png _ 450
 
 * Agenda 
-- Discuss Go fundamentals as needed
-- Setup and explore the repo starting point 
-- Implement the order processing app
-- Present our orders via REST and think about our error cases
+- Discuss Go fundamentals as needed (approx. 30 - 40 min)
+- Setup and explore the repo starting point (approx. 20 - 30 min)
+- Implement the order processing app (approx.  1 hr)
+- Present our orders via REST and think about our error cases (approx. 30min)
 - Unit testing & mock generation of the app (Optional)
 - Round up & finish off the day 
 
@@ -139,7 +139,7 @@ The following are *reserved* keywords in Go.
 * Printing primitives
 We format & print strings using the `fmt` package.
 Print statements use verbs which are usually preceded by `%`.
-
+`Println` prints your line as is, while `Printf` formats and prints your line.
 .play fundamentals/go_print.go /START OMIT/,/END OMIT/
 .image https://media.giphy.com/media/gw3IWyGkC0rsazTi/giphy.gif _ 350
 
@@ -205,9 +205,9 @@ Structs are initialized in an analogous way to primitive variables.
 .play fundamentals/go_struct_print.go /START OMIT/,/END OMIT/
 
 * Exercise 2 - Create & print some items
-Fill in `cmd/server.go` to create & print some items.
+Fill in `items/main.go` to create & print some items.
 Run your program and see it print out your created items
-.code exercises/ex_go_run_main.go
+.code exercises/ex_go_run_items.go
 *Solution*:
 .code exercises/ex_create_item_solution.go
 
@@ -260,9 +260,7 @@ Uncomment `models/item_price_test.go` and run it to see it pass.
 *Solution*:
 .code exercises/ex_item_price_solution.go
 
-.image https://media.giphy.com/media/4lf1L0axY1vyM/giphy.gif _ 250
-
-* Pointers 
+* The point of pointers
 - Pointers allow us to point to the memory space of a value.
 - The zero value of a pointer is `nil`.
 - The `&` operator generates a pointer to its operand.
@@ -368,7 +366,7 @@ The range returns two parameters:
 
 * Exercise 6 - Implement Order total
 Fill in `models/order.go` with a `Total()` method to calculate the total of the items.
-*Note:* It is considered idiomatic in Go to put `Get` into getters names.
+*Note:* It is not considered idiomatic in Go to put `Get` into getters names.
 .code exercises/ex_order_total.go
 Uncomment `models/order_total_test.go` and run it to see it pass
 .code exercises/ex_order_total_test_run.go
@@ -382,7 +380,6 @@ Uncomment `models/order_total_test.go` and run it to see it pass
 - The `underscore` can be used to disregard any return values that are not useful.
 - Return values cannot be silently disregarded. The number of assignments must match the number of return values.
 .play fundamentals/go_multiple_return.go /START OMIT/,/END OMIT/
-
 
 * Errors
 - Multiple return values are used in idiomatic Go for error handling.
@@ -554,7 +551,7 @@ Therefore, we have had to do our testing manually. Some refactoring is needed!
 
 .image https://media.giphy.com/media/3o7btY356cSVYzmFS8/giphy.gif _ 450
 
-* Interfaces
+* Interfaces (Optional)
 - To implement an interface in Go, a `struct` just needs to implement its methods.
 - Interfaces dynamically hold a reference to their underlying types.
 - All structs implement the empty interface - `interface{}`.
@@ -565,15 +562,15 @@ Therefore, we have had to do our testing manually. Some refactoring is needed!
 
 .image https://media.giphy.com/media/vIJaz7nMJhTUc/giphy.gif _ 300
 
-* Interfaces in action
+* Interfaces in action (Optional)
 .play fundamentals/go_interfaces.go /START OMIT/,/END OMIT/
 
-* Implicitly casting to interfaces
+* Implicitly casting to interfaces (Optional)
 Once passed as an interface type to a function, the compiler converts the `struct` to the `interface` under the hood.
 Only the methods defined in the `interface` will now be accessible.
 .play fundamentals/go_interfaces_casting.go /START OMIT/,/END OMIT/
 
-* The power of interfaces
+* The power of interfaces (Optional)
 Interfaces abstract code to make it more reusable, extensible and more testable.
 They are also a way to achieve *polymorphism* in Go.
 
@@ -585,7 +582,7 @@ They are also a way to achieve *polymorphism* in Go.
 In Go, *interfaces* are defined in the calling code not in the defining code.
 
 
-* Exercise 11 - Create a DB interface
+* Exercise 11 - Create a DB interface (Optional)
 Extract an interface for our DB that `OrderRepo` can use as a dependency.
 Remember that we define interfaces in calling code in `Go`.
 Fill in `repo/order_repo.go` with the interface definition.
@@ -635,7 +632,7 @@ In our 3-hour workshop we have:
 - Defined the `Item` model & the `Order` model
 - Implemented `OrderRepo` to save, find & delete orders
 - Implement the Orders REST server & manually tested it
-- Decoupled the Orders application from its database
+- Decoupled the Orders application from its database (Optional)
 - Unit tested the `OrderRepo` (Optional)
 
 .image https://media.giphy.com/media/10hO3rDNqqg2Xe/giphy.gif _ 550
